@@ -110,7 +110,7 @@ public class Acesso {
     atualiza(qualTipo, m, novoDado);
   }
 
-  private <T> void atualiza(int qualTipo, Medicamento m, T novoDado) {
+  private <T> void atualiza(int qualTipo, Medicamento m, T novoDado) throws Exception{
     switch (qualTipo) {
       case 1: { // atualizar nome do medicamento
         m.setNome((String) novoDado);
