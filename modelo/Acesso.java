@@ -2,7 +2,7 @@ package modelo;
 
 import java.sql.Date;
 import java.util.ArrayList;
-
+//kauan testou esse comentario pra ver como faz commit.
 public class Acesso {
   private Estoque estoque; // se forem ter mais de um aqui seria um arraylist
   private ArrayList<Funcionario> funcionarios;
