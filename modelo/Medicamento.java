@@ -3,13 +3,11 @@ package modelo;
 import java.sql.Date;
 
 public class Medicamento {
-  private int idRemedio;
   private String nome;
   private String composicao;
   private int quantidadePorCartela;
   private Date validadeRemedio; //nao entendi pq tem validade no medicamento, mas ta ai
   private int codigoDeBarras;
-  private static int cont=0;
 
   public Medicamento (String nome, int quantidadePorCartela, Date validadeRemedio, String composicao,int codigoDeBarras){
     this.nome = nome;
@@ -17,17 +15,6 @@ public class Medicamento {
     this.quantidadePorCartela = quantidadePorCartela;
     this.validadeRemedio = validadeRemedio;
     this.codigoDeBarras = codigoDeBarras;
-    idRemedio = cont++;
-  }
-
-  public int getIdRemedio() {
-    return idRemedio;
-  }
-
-  /*fiz um setId porque quando for a hora de recriar os objetos a partir do banco 
-  de dados pode ser que seja preciso ter esse metodo (se nao usarmos pode excluir)*/
-  public void setIdRemedio(int idRemedio) {
-    this.idRemedio = idRemedio;
   }
 
   public String getNome() {
@@ -71,7 +58,7 @@ public class Medicamento {
   }
 
   public String toString(){
-    return "ID:"+idRemedio+
+    return "Codigo de barras:"+codigoDeBarras+
         "\nMedicamento: "+nome+
         "\nComposicao:"+composicao+
         "\nComprimidos por cartela:"+quantidadePorCartela+

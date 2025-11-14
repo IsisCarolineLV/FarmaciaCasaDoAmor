@@ -43,11 +43,11 @@ public class Estoque {
   }
 
   //retorna um arraylist com todos os lotes de um mesmo medicamento
-  public ArrayList<Lote> getLotes(int idRemedio){
+  public ArrayList<Lote> getLotes(int codigoDeBarras){
     ArrayList<Lote> lotesComEsseMedicamento = new ArrayList<>();
     for(Lote l: lotes){
 
-      if(l.getMedicamento().getIdRemedio()==idRemedio){
+      if(l.getMedicamento().getCodigoDeBarras()==codigoDeBarras){
         lotesComEsseMedicamento.add(l);
       }
 

@@ -37,20 +37,24 @@ public class Acesso {
 
   public Medicamento pesquisarMedicamento(Medicamento medicamento) {
     for (Medicamento m : medicamentos) {
-      if (m.getIdRemedio() == medicamento.getIdRemedio()) {
+      if (m.getCodigoDeBarras() == medicamento.getCodigoDeBarras()) {
         return m;
       }
     }
     return null;
   }
 
-  public Medicamento pesquisarMedicamento(int idRemedio) {
+  public Medicamento pesquisarMedicamento(int codigoDeBarras) {
     for (Medicamento m : medicamentos) {
-      if (m.getIdRemedio() == idRemedio) {
+      if (m.getCodigoDeBarras() == codigoDeBarras) {
         return m;
       }
     }
     return null;
+  }
+
+  public void adicionarMedicamento(Funcionario f, String nome, int quantidadePorCartela, Date validadeRemedio, String composicao,int codigoDeBarras) {
+      
   }
 
   //////////// Manipulacao da lista de Funcionarios /////////////////////
@@ -110,7 +114,7 @@ public class Acesso {
     atualiza(qualTipo, m, novoDado);
   }
 
-  private <T> void atualiza(int qualTipo, Medicamento m, T novoDado) throws Exception{
+  private <T> void atualiza(int qualTipo, Medicamento m, T novoDado) throws Exception {
     switch (qualTipo) {
       case 1: { // atualizar nome do medicamento
         m.setNome((String) novoDado);
