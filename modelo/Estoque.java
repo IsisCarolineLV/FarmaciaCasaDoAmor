@@ -93,6 +93,8 @@ public class Estoque {
       throw new Exception("Estoque vazio!");
     
     lote.reduzirQuantidadeDeComprimidos();
+    if(lote.getQuantidadeComprimidos()<=0)
+      removerLote(lote);
   }
   
 }

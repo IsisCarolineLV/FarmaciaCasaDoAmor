@@ -2,6 +2,7 @@ package modelo;
 
 import java.sql.Date;
 import java.util.ArrayList;
+
 //kauan testou esse comentario pra ver como faz commit.
 public class Acesso {
   private Estoque estoque; // se forem ter mais de um aqui seria um arraylist
@@ -53,8 +54,28 @@ public class Acesso {
     return null;
   }
 
-  public void adicionarMedicamento(Funcionario f, String nome, int quantidadePorCartela, Date validadeRemedio, String composicao,int codigoDeBarras) {
-      
+  public void adicionarMedicamento(Funcionario f, String nome, int quantidadePorCartela, Date validadeRemedio,
+      String composicao, int codigoDeBarras) {
+
+  }
+
+  //////////// Manipulacao do estoque /////////////////////////////////
+  public Lote pesquisarLote(int idRemedio, Date validade) {
+    ArrayList<Lote> lotesValidos = estoque.getLotes(idRemedio);
+    for (Lote l : lotesValidos) {
+      if (l.getValidade().equals(validade))
+        return l;
+    }
+    return null;
+  }
+
+  public Lote pesquisarLote(String nomeMedicamento, Date validade) {
+    ArrayList<Lote> lotesValidos = estoque.getLotes(nomeMedicamento);
+    for (Lote l : lotesValidos) {
+      if (l.getValidade().equals(validade))
+        return l;
+    }
+    return null;
   }
 
   //////////// Manipulacao da lista de Funcionarios /////////////////////
@@ -128,11 +149,62 @@ public class Acesso {
         m.setQuantidadePorCartela((int) novoDado);
         break;
       }
-      case 4: { // atualizar data de validade
-        m.setValidadeRemedio((Date) novoDado);
+    }
+  }
+
+  ///////////////// Atualizar dados dos lotes ////////////////////
+  public <T> void atualizarLote(long CPFfuncionario, String nomeMedicamento, Date validade, int qualTipo, T novoDado)
+      throws Exception {
+    if (pesquisarFuncionario(CPFfuncionario) == null)
+      throw new Exception("Esse funcionario nao existe no sistema!");
+
+    Lote l = pesquisarLote(nomeMedicamento, validade);
+    if (l == null)
+      throw new Exception("Esse lote nao existe no sistema!");
+
+    atualiza(qualTipo, l, novoDado);
+  }
+
+  // sobrecarga pra pesquisar pelo id
+  public <T> void atualizarLote(long CPFfuncionario, int idRemedio, Date validade, int qualTipo, T novoDado)
+      throws Exception {
+    if (pesquisarFuncionario(CPFfuncionario) == null)
+      throw new Exception("Esse funcionario nao existe no sistema!");
+
+    Lote l = pesquisarLote(idRemedio, validade);
+    if (l == null)
+      throw new Exception("Esse lote nao existe no sistema!");
+
+    atualiza(qualTipo, l, novoDado);
+  }
+
+  private <T> void atualiza(int qualTipo, Lote l, T novoDado) throws Exception {
+    switch (qualTipo) {
+      case 1: { // atualizar medicamento referente ao lote
+        l.setMedicamento((Medicamento) novoDado);
+        break;
+      }
+      case 2: { // atualizar quantos comprimidos tem no estoque
+        l.setQuantidadeComprimidos((int) novoDado);
+        break;
+      }
+      case 3: { // atualizar data de validade do lote
+        l.setValidade((Date) novoDado);
         break;
       }
     }
+  }
+
+  public void darBaixa(long CPFfuncionario, int idRemedio, Date validade) throws Exception {
+    if (pesquisarFuncionario(CPFfuncionario) == null)
+      throw new Exception("Esse funcionario nao existe no sistema!");
+
+    Lote lote = pesquisarLote(idRemedio, validade);
+    if (lote == null)
+      throw new Exception("Esse lote nao existe no sistema!");
+
+    estoque.darBaixa(lote.getIdLote());
+
   }
 
 }

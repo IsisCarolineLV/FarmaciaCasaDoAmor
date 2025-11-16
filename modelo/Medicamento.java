@@ -1,19 +1,16 @@
 package modelo;
 
-import java.sql.Date;
-
 public class Medicamento {
   private String nome;
   private String composicao;
   private int quantidadePorCartela;
-  private Date validadeRemedio; //nao entendi pq tem validade no medicamento, mas ta ai
+  //private Date validadeRemedio; //nao entendi pq tem validade no medicamento, mas ta ai
   private int codigoDeBarras;
 
-  public Medicamento (String nome, int quantidadePorCartela, Date validadeRemedio, String composicao,int codigoDeBarras){
+  public Medicamento (String nome, int quantidadePorCartela, String composicao,int codigoDeBarras){
     this.nome = nome;
     this.composicao = composicao;
     this.quantidadePorCartela = quantidadePorCartela;
-    this.validadeRemedio = validadeRemedio;
     this.codigoDeBarras = codigoDeBarras;
   }
 
@@ -41,14 +38,6 @@ public class Medicamento {
     this.quantidadePorCartela = quantidadePorCartela;
   }
 
-  public Date getValidadeRemedio() {
-    return validadeRemedio;
-  }
-
-  public void setValidadeRemedio(Date validadeRemedio) {
-    this.validadeRemedio = validadeRemedio;
-  }
-
   public int getCodigoDeBarras() {
     return codigoDeBarras;
   }
@@ -61,8 +50,7 @@ public class Medicamento {
     return "Codigo de barras:"+codigoDeBarras+
         "\nMedicamento: "+nome+
         "\nComposicao:"+composicao+
-        "\nComprimidos por cartela:"+quantidadePorCartela+
-        "\nValidade do remedio:"+validadeRemedio.toString();
+        "\nComprimidos por cartela:"+quantidadePorCartela;
   }
   
 }
