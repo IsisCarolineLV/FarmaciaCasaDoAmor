@@ -1,0 +1,56 @@
+package controller;
+
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import javafx.scene.Node;
+import javafx.event.ActionEvent;
+import java.io.IOException;
+
+public class TelaCadastroLoteController {
+
+    @FXML private TextField campoNomeMedicamento;
+    @FXML private TextField campoQuantidade;
+    @FXML private DatePicker campoValidade;
+    @FXML private Label labelErroQtd;
+
+    @FXML
+    public void acaoSalvar(ActionEvent event) {
+        String textoQtd = campoQuantidade.getText();
+        if (!textoQtd.matches("\\d+")) {
+            
+            labelErroQtd.setVisible(true);
+            labelErroQtd.setText("A quantidade deve conter apenas números!");
+            
+            return; 
+        }
+
+        labelErroQtd.setVisible(false);
+        // Aqui vai vir a logica de add no BD por ex, como nao tem ainda, e uma simulacao de como seriam os campos etc etc
+        System.out.println("Salvando Lote...");
+        System.out.println("Medicamento: " + campoNomeMedicamento.getText());
+        
+        int quantidade = Integer.parseInt(textoQtd); 
+        System.out.println("Qtd (Int): " + quantidade);
+        
+        System.out.println("Validade: " + campoValidade.getValue());
+        
+        acaoCancelar(event);
+    }
+
+    @FXML
+    public void acaoCancelar(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/gui/TelaInicial.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root, 900, 600));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
