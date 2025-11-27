@@ -1,5 +1,6 @@
 package modelo;
-
+//Essa classe faz a mesma coisa que o controllerEstoque, 
+//mas pedindo sempre os dados do funcionario responsavel
 import java.sql.Date;
 import java.util.ArrayList;
 

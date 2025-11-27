@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.event.ActionEvent;
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 
 public class TelaCadastroLoteController {
 
@@ -31,6 +33,9 @@ public class TelaCadastroLoteController {
         }
 
         labelErroQtd.setVisible(false);
+        LocalDate localDate = campoValidade.getValue();;
+        ControllerEstoque.adicionarLote(campoNomeMedicamento.getText(), Integer.parseInt(textoQtd), Date.valueOf(localDate));
+        System.out.println( ControllerEstoque.imprimirLotes());
         // Aqui vai vir a logica de add no BD por ex, como nao tem ainda, e uma simulacao de como seriam os campos etc etc
         System.out.println("Salvando Lote...");
         System.out.println("Medicamento: " + campoNomeMedicamento.getText());

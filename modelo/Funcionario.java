@@ -1,5 +1,5 @@
 package modelo;
-
+//isis: sou a favor da gente tirar esse funcionario e o acesso
 public class Funcionario {
   private String nome;
   private long CPF;
