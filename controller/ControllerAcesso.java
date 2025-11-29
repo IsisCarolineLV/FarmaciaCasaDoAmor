@@ -285,23 +285,23 @@ public class ControllerAcesso {
 
   public ArrayList<Lote> getVencidos(){
     ArrayList<Lote> vencidos = new ArrayList<>();
-    for(int i=0; i<3; i++){
+    /*for(int i=0; i<3; i++){
       vencidos.add(new Lote(0, Date.valueOf("2023-01-01"), new Medicamento("Remedio Vencido", 10, "ComposicaoX", 123456789)));
-    }
-    /*for(Estoque e: estoque){
-      vencidos.addAll(e.getVencidos());
     }*/
+    for(Estoque e: estoque){
+      vencidos.addAll(e.getVencidos());
+    }
     return vencidos;
   }
 
   public ArrayList<Lote> getQuaseVencidos(){
     ArrayList<Lote> quaseVencidos = new ArrayList<>();
-    for(int i=0; i<5; i++){
+    /*for(int i=0; i<5; i++){
       quaseVencidos.add(new Lote(0, Date.valueOf("2023-12-31"), new Medicamento("Remedio Quase Vencido", 10, "ComposicaoY", 987654321)));
-    }
-    /*for(Estoque e: estoque){
-      quaseVencidos.addAll(e.getQuaseVencidos());
     }*/
+    for(Estoque e: estoque){
+      quaseVencidos.addAll(e.getQuaseVencidos());
+    }
     return quaseVencidos;
   }
 

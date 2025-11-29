@@ -37,6 +37,7 @@ public class TelaInicialController{
     @FXML
     public void initialize() {
         System.out.println("Tela Inicial carregada.");
+        ControllerTelas.gerarNotificacoes();
         if(ControllerTelas.temNotificacoes()) {
         	circleAtencao.setVisible(true);
         } else {

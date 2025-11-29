@@ -17,7 +17,7 @@ public class ControllerTelas {
 
   static {
     acesso.adicionarFuncionario(funcionarioPadrao);
-    temNotificacoes = true;
+    gerarNotificacoes();
   }
 
   public static ControllerAcesso getAcesso() {
@@ -39,8 +39,10 @@ public class ControllerTelas {
     }
     ArrayList<Lote> lotesAmarelos = acesso.getQuaseVencidos();
     for(Lote l: lotesAmarelos){
-      panesNotificacoes.add(geradorDeNotificacoesAmarelas.criarNotificacao("Lote Vencido:"+l.getMedicamento().getNome()));
+      panesNotificacoes.add(geradorDeNotificacoesAmarelas.criarNotificacao("Lote Quase Vencido:"+l.getMedicamento().getNome()));
     }
+    if(panesNotificacoes.size()>0)
+      temNotificacoes = true;
     return panesNotificacoes;
   }
 }
