@@ -40,6 +40,7 @@ public class GeradorDeNotificacoes {
             rect.setStroke(cores[4]);
         }
         rect.setStrokeWidth(STROKE_WIDTH);
+        rect.setStyle("-fx-cursor: hand;");
 
         // Label
         Label label = new Label(texto);
