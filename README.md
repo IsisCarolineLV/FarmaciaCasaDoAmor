@@ -1,13 +1,6 @@
-# 📌 Pendências do Projeto – Sistema de Gerenciamento de Medicamentos
+# 📌 Pendências:
 
-Este documento reúne todas as tarefas pendentes do projeto, organizadas por área (**Front-end**, **Back-end** e **Banco de Dados**).  
-Use esta lista como guia de desenvolvimento para acompanhar o progresso das funcionalidades.
-
----
-
-## 🎨 Front-end (UI/UX)
-
-### 🔧 Funcionalidades pendentes
+## 🎨 Front-end
 - [ ] Criar caixas de confirmação (ex.: “Medicamento adicionado”, “Tem certeza que deseja excluir?”)
 - [ ] Implementar a tela do histórico de acessos
 - [ ] Criar a tela de detalhes do medicamento, exibindo:
@@ -18,9 +11,8 @@ Use esta lista como guia de desenvolvimento para acompanhar o progresso das func
 
 ---
 
-## 🧠 Back-end (Lógica & Regras do Sistema)
+## 🧠 Back-end
 
-### 🔧 Funcionalidades pendentes
 - [ ] Implementar a pesquisa dinâmica (ao digitar, mudar automaticamente para a tela de resultados)
 - [ ] Gerar e manter o histórico de acessos/ações
 - [ ] Cadastrar funcionários
@@ -29,11 +21,8 @@ Use esta lista como guia de desenvolvimento para acompanhar o progresso das func
 
 ---
 
-## 🗄️ Banco de Dados (Persistência)
+## 🗄️ Banco de Dados
 
-### 🔧 Funcionalidades pendentes
 - [ ] Integrar o BD com o back-end
 - [ ] Salvar alterações, adições e remoções
 - [ ] Enviar dados para a aplicação quando requisitado (ex.: pesquisas)
-
-
