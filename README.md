@@ -26,3 +26,5 @@
 - [ ] Integrar o BD com o back-end
 - [ ] Salvar alterações, adições e remoções
 - [ ] Enviar dados para a aplicação quando requisitado (ex.: pesquisas)
+
+
