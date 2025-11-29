@@ -10,9 +10,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import modelo.Acesso;
-import modelo.Estoque;
+//import modelo.Estoque;
 
-public class TelaInicialController {
+public class TelaInicialController{
 
     @FXML
     private TextField campoPesquisa;
@@ -33,7 +33,8 @@ public class TelaInicialController {
     @FXML
     public void initialize() {
         System.out.println("Tela Inicial carregada.");
-        ControllerEstoque.setEstoque(new Estoque());
+        //ControllerTelas telas = new ControllerTelas();
+        //ControllerEstoque.setEstoque(new Estoque());
     }
 
     @FXML

@@ -6,18 +6,26 @@ import java.util.ArrayList;
 
 public class Estoque {
   private ArrayList<Lote> lotes;
+  private Medicamento medicamento;
 
-  public Estoque() {
+  public Estoque(Medicamento medicamento) {
     lotes = new ArrayList<>();
+    this.medicamento = medicamento;
   }
 
   public ArrayList<Lote> getArrayLotes() {
     return lotes;
   }
 
+  public Medicamento getMedicamento(){
+    return medicamento;
+  }
+
   public void adicionarLote(Lote novoLote) {
     // verifica se o lote ja nao foi inserido
-    if (pesquisarLote(novoLote.getIdLote()) == null)
+    // e se ele eh do mesmo medicamento a que este estoque se refere
+    if(novoLote.getMedicamento().equals(medicamento) 
+      && pesquisarLote(novoLote.getIdLote()) == null)
       lotes.add(novoLote);
   }
 
@@ -30,7 +38,7 @@ public class Estoque {
     throw new Exception("Esse lote nao existe no sistema!");
   }
 
-  // retorna um arraylist com todos os lotes de um mesmo medicamento
+  /*retorna um arraylist com todos os lotes de um mesmo medicamento
   public ArrayList<Lote> getLotes(String nome) {
     ArrayList<Lote> lotesComEsseMedicamento = new ArrayList<>();
     for (Lote l : lotes) {
@@ -54,12 +62,23 @@ public class Estoque {
 
     }
     return lotesComEsseMedicamento;
-  }
+  }*/
 
   public Lote pesquisarLote(int idLote) {
     for (Lote l : lotes) {
 
       if (l.getIdLote() == idLote) {
+        return l;
+      }
+
+    }
+    return null;
+  }
+
+   public Lote pesquisarLote(Date validade) {
+    for (Lote l : lotes) {
+
+      if (l.getValidade().equals(validade)) {
         return l;
       }
 
@@ -99,13 +118,13 @@ public class Estoque {
     lote.setValidade(validade);
   }
 
-  public void atualizar(int idLote, Medicamento medicamento) throws Exception {
+  /*public void atualizar(int idLote, Medicamento medicamento) throws Exception {
     Lote lote = pesquisarLote(idLote);
     if (lote == null)
       throw new Exception("Lote " + idLote + " nao existe no sistema!");
 
     lote.setMedicamento(medicamento);
-  }
+  }*/
 
   public void darBaixa(int idLote) throws Exception {
     Lote lote = pesquisarLote(idLote);

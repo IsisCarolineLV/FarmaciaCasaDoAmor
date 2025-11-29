@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 
-public class TelaNotificacoesController {
+public class TelaNotificacoesController{
 	@FXML
     private Label labelAviso; 
 

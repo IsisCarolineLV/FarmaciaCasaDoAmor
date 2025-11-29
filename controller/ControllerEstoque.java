@@ -1,12 +1,13 @@
 package controller;
-//teste
+//Devido a nova mudanca essa classe nao e mais necessaria, mas caso queiramos
+//manter a logica do estoque separada do acesso do funcionario, podemos usar ela
 import java.sql.Date;
 import java.util.ArrayList;
 
 import modelo.*;
 
 public class ControllerEstoque {
-  private static Estoque estoque;
+ /*private static Estoque estoque;
   private static ArrayList<Medicamento> medicamentos =  new ArrayList<>();
 
   public ControllerEstoque() {
@@ -97,7 +98,7 @@ public class ControllerEstoque {
 
     Medicamento m = pesquisarMedicamento(nomeMedicamento);
     if (m == null)
-      throw new Exception("Esse medicamneto nao existe no sistema!");
+      throw new Exception("Esse medicamento nao existe no sistema!");
 
     atualiza(qualTipo, m, novoDado);
   }
@@ -177,6 +178,6 @@ public class ControllerEstoque {
 
   public static String imprimirLotes(){
     return estoque.toString();
-  }
+  }*/
 
 }

@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 
-public class TelaCadastroLoteController {
+public class TelaCadastroLoteController{
 
     @FXML private TextField campoNomeMedicamento;
     @FXML private TextField campoQuantidade;
@@ -33,10 +33,13 @@ public class TelaCadastroLoteController {
         }
 
         labelErroQtd.setVisible(false);
-        LocalDate localDate = campoValidade.getValue();;
-        ControllerEstoque.adicionarLote(campoNomeMedicamento.getText(), Integer.parseInt(textoQtd), Date.valueOf(localDate));
-        System.out.println( ControllerEstoque.imprimirLotes());
+        LocalDate localDate = campoValidade.getValue();
+        //se formos usar a logica de um so estoque pra tudo, descomentar a linha abaixo
+        //ControllerEstoque.adicionarLote(campoNomeMedicamento.getText(), Integer.parseInt(textoQtd), Date.valueOf(localDate));
+        //System.out.println( ControllerEstoque.imprimirLotes());
+
         // Aqui vai vir a logica de add no BD por ex, como nao tem ainda, e uma simulacao de como seriam os campos etc etc
+
         System.out.println("Salvando Lote...");
         System.out.println("Medicamento: " + campoNomeMedicamento.getText());
         
@@ -44,8 +47,17 @@ public class TelaCadastroLoteController {
         System.out.println("Qtd (Int): " + quantidade);
         
         System.out.println("Validade: " + campoValidade.getValue());
+
+        //adiciona o lote (precisamos fazer a logica de verificar se o funcionario tem acesso a isso)
+        boolean sucesso = ControllerTelas.getAcesso().adicionarLoteEstoque(campoNomeMedicamento.getText(), Date.valueOf(localDate), quantidade);
+        if(!sucesso){
+            System.out.println("Medicamento nao cadastrado, cadastre primeiro");
+            chamaTelaMedicamento(campoNomeMedicamento.getText(), Date.valueOf(localDate), quantidade);
+        }else{
+            System.out.println("Lote adicionado com sucesso!");
+            acaoCancelar(event);
+        }
         
-        acaoCancelar(event);
     }
 
     @FXML
@@ -56,6 +68,44 @@ public class TelaCadastroLoteController {
             stage.setScene(new Scene(root, 900, 600));
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void chamaTelaMedicamento(String nome, Date validade, int quantidadePorCartela){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/TelaCadastroMedicamento.fxml"));
+            Parent root = loader.load();
+
+            TelaCadastroMedicamentoController controller = loader.getController();
+            controller.setDadosLote(nome,validade, quantidadePorCartela );
+
+            Stage stage = (Stage) campoNomeMedicamento.getScene().getWindow();
+            stage.setScene(new Scene(root, 900, 600));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void tentarInserirLoteDeNovo(){
+        String textoQtd = campoQuantidade.getText();
+        labelErroQtd.setVisible(false);
+        LocalDate localDate = campoValidade.getValue();
+        //System.out.println("Salvando Lote...");
+        //System.out.println("Medicamento: " + campoNomeMedicamento.getText());
+        
+        int quantidade = Integer.parseInt(textoQtd); 
+        //System.out.println("Qtd (Int): " + quantidade);
+        
+        //System.out.println("Validade: " + campoValidade.getValue());
+
+        //adiciona o lote (precisamos fazer a logica de verificar se o funcionario tem acesso a isso)
+        boolean sucesso = ControllerTelas.getAcesso().adicionarLoteEstoque(campoNomeMedicamento.getText(), Date.valueOf(localDate), quantidade);
+        if(!sucesso){
+            System.out.println("Medicamento nao cadastrado, cadastre primeiro");
+            chamaTelaMedicamento(campoNomeMedicamento.getText(), Date.valueOf(localDate), quantidade);
+        }else{
+            System.out.println("Lote adicionado com sucesso!");
+          acaoCancelar(new ActionEvent());
         }
     }
 }

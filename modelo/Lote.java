@@ -36,6 +36,12 @@ public class Lote {
       this.quantidadeComprimidos = quantidadeComprimidos;
   }
 
+  public int adicionarQuantidadeComprimidos(int quantidadeComprimidos) {
+    if(quantidadeComprimidos>0)
+      this.quantidadeComprimidos += quantidadeComprimidos;
+    return this.quantidadeComprimidos;
+  }
+
   public Date getValidade() {
     return validade;
   }
