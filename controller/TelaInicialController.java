@@ -78,13 +78,25 @@ public class TelaInicialController{
     }
 
     @FXML
-    public void irParaCadastro(javafx.event.ActionEvent event) {
+    public void irParaCadastroLote(javafx.event.ActionEvent event) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/gui/TelaCadastroLote.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root, 900, 600));
         } catch (Exception e) {
             System.out.println("Erro ao abrir tela de cadastro.");
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void irParaCadastroMedicamento(javafx.event.ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/gui/TelaCadastroMedicamento.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root, 900, 600));
+        } catch (Exception e) {
+            System.out.println("Erro ao abrir tela de cadastro de medicamento.");
             e.printStackTrace();
         }
     }

@@ -1,10 +1,10 @@
 package controller;
 //Devido a nova mudanca essa classe nao e mais necessaria, mas caso queiramos
 //manter a logica do estoque separada do acesso do funcionario, podemos usar ela
-import java.sql.Date;
+/*import java.sql.Date;
 import java.util.ArrayList;
 
-import modelo.*;
+import modelo.*;*/
 
 public class ControllerEstoque {
  /*private static Estoque estoque;
