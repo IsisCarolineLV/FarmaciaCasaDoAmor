@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import modelo.Acesso;
 //import modelo.Estoque;
@@ -23,6 +24,9 @@ public class TelaInicialController{
     @FXML
     private Button btnCancelar;
 
+    @FXML
+    private Circle circleAtencao;
+
     @SuppressWarnings("unused")
 	private Acesso sistemaAcesso;
 
@@ -33,6 +37,11 @@ public class TelaInicialController{
     @FXML
     public void initialize() {
         System.out.println("Tela Inicial carregada.");
+        if(ControllerTelas.temNotificacoes()) {
+        	circleAtencao.setVisible(true);
+        } else {
+        	circleAtencao.setVisible(false);
+        }
         //ControllerTelas telas = new ControllerTelas();
         //ControllerEstoque.setEstoque(new Estoque());
     }

@@ -5,9 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 
 public class TelaNotificacoesController{
@@ -15,16 +19,21 @@ public class TelaNotificacoesController{
     private Label labelAviso; 
 
     @FXML
+    private VBox paneNotificacoes;
+
+    @FXML
     public void initialize() { // funcaozinha que simula a tela de notificaçoes,
     						   // atualmente so envia que nao tem not
         
-        boolean temNotificacoes = false; // Variável de teste
-
-        if (!temNotificacoes) {
+        if (!ControllerTelas.temNotificacoes()) {
             labelAviso.setText("Não há notificações novas");
         } else {
             // Exemplo do que aconteceria se tivesse notificações
-            labelAviso.setText("Você tem itens pendentes!");
+            ArrayList<Pane> notificacoes = ControllerTelas.gerarNotificacoes();
+            for(Pane p: notificacoes){
+                paneNotificacoes.getChildren().add(p);
+            }
+            //labelAviso.setText("Você tem itens pendentes!");
         }
     }
     @FXML
