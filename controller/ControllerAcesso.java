@@ -10,15 +10,19 @@ public class ControllerAcesso {
   private ArrayList<Estoque> estoque; 
   private ArrayList<Funcionario> funcionarios;
   private ArrayList<Medicamento> medicamentos;
+  private Historico historico;
 
   public ControllerAcesso() {
     estoque = new ArrayList<>();
     funcionarios = new ArrayList<>();
     medicamentos = new ArrayList<>();
+    historico = new Historico();
   }
 
   //////// Manipulacao da lista de medicamentos ////////////
-  public void adicionarMedicamento(Medicamento m) {
+  
+  //agora precisa do funcionario
+  /*public void adicionarMedicamento(Medicamento m) {
     if (pesquisarMedicamento(m) != null)
       medicamentos.add(m);
   }
@@ -28,7 +32,7 @@ public class ControllerAcesso {
       throw new Exception("Esse medicamento nao existe no sistema!");
     medicamentos.remove(m);
     removerEstoque(getEstoque(m));
-  }
+  }*/
 
   public Medicamento pesquisarMedicamento(String nome) {
     for (Medicamento m : medicamentos) {
@@ -68,6 +72,20 @@ public class ControllerAcesso {
       }
       Medicamento novo = new Medicamento(nome, quantidadePorCartela, composicao, codigoDeBarras);
       medicamentos.add(novo);
+      historico.adicionarAcesso(new AcessoMedicamento("Adicionou Medicamento", new Date(System.currentTimeMillis()), f, novo));
+  }
+
+  public void removerMedicamento(Funcionario f, Medicamento m) throws Exception {
+    if(pesquisarFuncionario(f) == null){
+        throw new Exception("Esse funcionario nao existe no sistema!");
+    }
+
+    if (pesquisarMedicamento(m) == null)
+      throw new Exception("Esse medicamento nao existe no sistema!");
+
+    medicamentos.remove(m);
+    removerEstoque(getEstoque(m));  //detalhe importante pro bd, deve excluir os estoques antes do medicamento
+    historico.adicionarAcesso(new AcessoMedicamento("Removeu Medicamento", new Date(System.currentTimeMillis()), f, m));
   }
 
   //////////// Manipulacao do estoque /////////////////////////////////
@@ -185,62 +203,70 @@ public class ControllerAcesso {
 
   public <T> void atualizarMedicamento(long CPFfuncionario, String nomeMedicamento, int qualTipo, T novoDado)
       throws Exception {
-    if (pesquisarFuncionario(CPFfuncionario) == null)
+    Funcionario f = pesquisarFuncionario(CPFfuncionario);
+    if (f == null)
       throw new Exception("Esse funcionario nao existe no sistema!");
 
     Medicamento m = pesquisarMedicamento(nomeMedicamento);
     if (m == null)
       throw new Exception("Esse medicamneto nao existe no sistema!");
 
-    atualiza(qualTipo, m, novoDado);
+    String qual = atualiza(qualTipo, m, novoDado);
+    historico.adicionarAcesso(new AcessoMedicamento(qual, new Date(System.currentTimeMillis()), f, m));
   }
 
   // sobrecarga pra pesquisar pelo id
   public <T> void atualizarMedicamento(long CPFfuncionario, int idRemedio, int qualTipo, T novoDado) throws Exception {
-    if (pesquisarFuncionario(CPFfuncionario) == null)
+    Funcionario f = pesquisarFuncionario(CPFfuncionario);
+    if ((f) == null)
       throw new Exception("Esse funcionario nao existe no sistema!");
 
     Medicamento m = pesquisarMedicamento(idRemedio);
     if (m == null)
       throw new Exception("Esse medicamneto nao existe no sistema!");
 
-    atualiza(qualTipo, m, novoDado);
+    String qual = atualiza(qualTipo, m, novoDado);
+    historico.adicionarAcesso(new AcessoMedicamento(qual, new Date(System.currentTimeMillis()), f, m));
   }
 
-  private <T> void atualiza(int qualTipo, Medicamento m, T novoDado) throws Exception {
+  private <T> String atualiza(int qualTipo, Medicamento m, T novoDado) throws Exception {
     switch (qualTipo) {
       case 1: { // atualizar nome do medicamento
         m.setNome((String) novoDado);
-        break;
+        return "Atualizou nome";
       }
       case 2: { // atualizar composicao do medicamento
         m.setComposicao((String) novoDado);
-        break;
+        return "Atualizou composicao";
       }
       case 3: { // atualizar quantos comprimidos vem na cartela
         m.setQuantidadePorCartela((int) novoDado);
-        break;
+        return "Atualizou quantidade por cartela";
       }
     }
+    return "";
   }
 
   ///////////////// Atualizar dados dos lotes ////////////////////
   public <T> void atualizarLote(long CPFfuncionario, String nomeMedicamento, Date validade, int qualTipo, T novoDado)
       throws Exception {
-    if (pesquisarFuncionario(CPFfuncionario) == null)
+    Funcionario f = pesquisarFuncionario(CPFfuncionario);
+    if (f == null)
       throw new Exception("Esse funcionario nao existe no sistema!");
 
     Lote l = pesquisarLote(nomeMedicamento, validade);
     if (l == null)
       throw new Exception("Esse lote nao existe no sistema!");
 
-    atualiza(qualTipo, l, novoDado);
+    String a = atualiza(qualTipo, l, novoDado);
+    historico.adicionarAcesso(new Acesso(a, new Date(System.currentTimeMillis()), f, getEstoque(l.getMedicamento()), l));
   }
 
   // sobrecarga pra pesquisar pelo id
   public <T> void atualizarLote(long CPFfuncionario, int idRemedio, Date validade, int qualTipo, T novoDado)
       throws Exception {
-    if (pesquisarFuncionario(CPFfuncionario) == null)
+    Funcionario f = pesquisarFuncionario(CPFfuncionario);
+    if ( f == null)
       throw new Exception("Esse funcionario nao existe no sistema!");
 
     Estoque e = getEstoque(pesquisarMedicamento(idRemedio));
@@ -248,30 +274,33 @@ public class ControllerAcesso {
       throw new Exception("Esse lote nao existe no sistema!");
 
     Lote l = e.pesquisarLote(validade); //pesquisa pela validade
-    atualiza(qualTipo, l, novoDado);
+    String a = atualiza(qualTipo, l, novoDado);
+    historico.adicionarAcesso(new Acesso(a, new Date(System.currentTimeMillis()), f, getEstoque(l.getMedicamento()), l));
   }
 
-  private <T> void atualiza(int qualTipo, Lote l, T novoDado) throws Exception {
+  private <T> String atualiza(int qualTipo, Lote l, T novoDado) throws Exception {
     switch (qualTipo) {
       case 1: { // atualizar medicamento referente ao lote
         getEstoque(l.getMedicamento()).removerLote(l); //remove o lote do estoque antigo
         l.setMedicamento((Medicamento) novoDado); //atualiza o medicamento do lote
         adicionarLoteEstoque(l);  //adiciona o lote no estoque do novo medicamento
-        break;
+        return "Atualizou medicamento do lote";
       }
       case 2: { // atualizar quantos comprimidos tem no estoque
         l.setQuantidadeComprimidos((int) novoDado);
-        break;
+        return "Atualizou quantidade de comprimidos do lote";
       }
       case 3: { // atualizar data de validade do lote
         l.setValidade((Date) novoDado);
-        break;
+        return "Atualizou validade do lote";
       }
     }
+    return "";
   }
 
   public void darBaixa(long CPFfuncionario, int idRemedio, Date validade) throws Exception {
-    if (pesquisarFuncionario(CPFfuncionario) == null)
+    Funcionario f = pesquisarFuncionario(CPFfuncionario);
+    if (f == null)
       throw new Exception("Esse funcionario nao existe no sistema!");
 
     Estoque e = getEstoque(pesquisarMedicamento(idRemedio));
@@ -280,7 +309,7 @@ public class ControllerAcesso {
 
     Lote lote = e.pesquisarLote(validade);
     e.darBaixa(lote.getIdLote());
-
+    historico.adicionarAcesso(new Acesso("Deu baixa", new Date(System.currentTimeMillis()), f, e, lote));
   }
 
   public ArrayList<Lote> getVencidos(){
@@ -303,6 +332,10 @@ public class ControllerAcesso {
       quaseVencidos.addAll(e.getQuaseVencidos());
     }
     return quaseVencidos;
+  }
+
+  public String imprimirHistorico(){
+    return historico.toString();
   }
 
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -109,5 +110,10 @@ public class TelaInicialController{
             System.out.println("Erro ao abrir tela de cadastro de medicamento.");
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    void irParaHistorico(ActionEvent event) {
+        System.out.println(ControllerTelas.getAcesso().imprimirHistorico());
     }
 }

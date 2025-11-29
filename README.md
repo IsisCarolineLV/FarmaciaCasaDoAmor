@@ -14,7 +14,7 @@
 ## 🧠 Back-end
 
 - [ ] Implementar a pesquisa dinâmica (ao digitar, mudar automaticamente para a tela de resultados)
-- [ ] Gerar e manter o histórico de acessos/ações
+- [X] Gerar e manter o histórico de acessos/ações
 - [ ] Cadastrar funcionários
 - [X] Envio de notificações (alertas, vencimentos, quase acabando, etc)
 - [ ] Integração completa com o Banco de Dados

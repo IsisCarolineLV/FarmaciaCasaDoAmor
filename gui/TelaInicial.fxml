@@ -27,6 +27,7 @@
             
             <Button mnemonicParsing="false" onAction="#irParaCadastroLote" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #4A6E7C; -fx-text-fill: white; -fx-background-radius: 15; -fx-cursor: hand; -fx-font-weight: bold;" text="+ Adicionar Lote" />
             <Button mnemonicParsing="false" onAction="#irParaCadastroMedicamento" prefHeight="59.0" prefWidth="160.0" style="-fx-background-color: #4A6E7C; -fx-text-fill: white; -fx-background-radius: 15; -fx-cursor: hand; -fx-font-weight: bold;" text="+ Adicionar Medicamento" textAlignment="CENTER" wrapText="true" />
+            <Button mnemonicParsing="false" onAction="#irParaHistorico" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #4A6E7C; -fx-text-fill: white; -fx-background-radius: 15; -fx-cursor: hand; -fx-font-weight: bold;" text="Historico" />
          </children>
       </VBox>
    </left>
