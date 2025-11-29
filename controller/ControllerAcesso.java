@@ -129,7 +129,11 @@ public class ControllerAcesso {
     e.adicionarLote(l);
   }
 
-  public boolean adicionarLoteEstoque(String nomeMedicamento, Date validade, int quantidadeComprimidos){
+  public boolean adicionarLoteEstoque(Funcionario f, String nomeMedicamento, Date validade, int quantidadeComprimidos)
+  throws Exception {
+    if(pesquisarFuncionario(f) == null){
+      throw new Exception ("Esse funcionario nao existe no sistema!");
+    }
     Medicamento m = pesquisarMedicamento(nomeMedicamento);
     if(m==null){
       System.out.println("Medicamento nao cadastrado no sistema!");
@@ -147,7 +151,9 @@ public class ControllerAcesso {
       return true;
     } 
     //cria o novo lote
-    e.adicionarLote(new Lote(quantidadeComprimidos, validade, m));
+    Lote novoLote = new Lote(quantidadeComprimidos, validade, m);
+    e.adicionarLote(novoLote);
+    historico.adicionarAcesso(new Acesso("Adicionou lote", new Date(System.currentTimeMillis()), f, e, novoLote));
     return true;
   }
   /*public Lote pesquisarLote(int idRemedio, Date validade) {

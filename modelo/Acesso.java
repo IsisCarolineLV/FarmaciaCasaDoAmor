@@ -37,8 +37,8 @@ public class Acesso {
   }
 
   public String toString() {
-    return "Acesso [tipo=" + tipo + ", dataDeAcesso=" + dataDeAcesso + ", funcionario=" + funcionario
-        + ", estoque=" + estoque + ", lote=" + lote + "]";
+    return "Acesso [tipo=" + tipo + ", dataDeAcesso=" + dataDeAcesso + ", funcionario=" + funcionario.getNome()
+         + ", lote=" + lote.getMedicamento().getNome()+ ", vencimento="+lote.getValidade() + "]";
   }
 }
 

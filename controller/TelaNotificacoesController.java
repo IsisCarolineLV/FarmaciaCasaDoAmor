@@ -28,7 +28,7 @@ public class TelaNotificacoesController{
         if (!ControllerTelas.temNotificacoes()) {
             labelAviso.setText("Não há notificações novas");
         } else {
-            // Exemplo do que aconteceria se tivesse notificações
+            paneNotificacoes.setAlignment(javafx.geometry.Pos.TOP_CENTER);
             ArrayList<Pane> notificacoes = ControllerTelas.gerarNotificacoes();
             for(Pane p: notificacoes){
                 paneNotificacoes.getChildren().add(p);

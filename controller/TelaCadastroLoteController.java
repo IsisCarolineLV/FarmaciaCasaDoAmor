@@ -49,13 +49,18 @@ public class TelaCadastroLoteController{
         System.out.println("Validade: " + campoValidade.getValue());
 
         //adiciona o lote (precisamos fazer a logica de verificar se o funcionario tem acesso a isso)
-        boolean sucesso = ControllerTelas.getAcesso().adicionarLoteEstoque(campoNomeMedicamento.getText(), Date.valueOf(localDate), quantidade);
-        if(!sucesso){
-            System.out.println("Medicamento nao cadastrado, cadastre primeiro");
-            chamaTelaMedicamento(campoNomeMedicamento.getText(), Date.valueOf(localDate), quantidade);
-        }else{
-            System.out.println("Lote adicionado com sucesso!");
-            acaoCancelar(event);
+        try {
+            boolean sucesso = ControllerTelas.getAcesso().adicionarLoteEstoque(ControllerTelas.getFuncionarioPadrao() ,
+            campoNomeMedicamento.getText(), Date.valueOf(localDate), quantidade);
+            if(!sucesso){
+                System.out.println("Medicamento nao cadastrado, cadastre primeiro");
+                chamaTelaMedicamento(campoNomeMedicamento.getText(), Date.valueOf(localDate), quantidade);
+            }else{
+                System.out.println("Lote adicionado com sucesso!");
+                acaoCancelar(event);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         
     }
@@ -99,13 +104,18 @@ public class TelaCadastroLoteController{
         //System.out.println("Validade: " + campoValidade.getValue());
 
         //adiciona o lote (precisamos fazer a logica de verificar se o funcionario tem acesso a isso)
-        boolean sucesso = ControllerTelas.getAcesso().adicionarLoteEstoque(campoNomeMedicamento.getText(), Date.valueOf(localDate), quantidade);
-        if(!sucesso){
-            System.out.println("Medicamento nao cadastrado, cadastre primeiro");
-            chamaTelaMedicamento(campoNomeMedicamento.getText(), Date.valueOf(localDate), quantidade);
-        }else{
-            System.out.println("Lote adicionado com sucesso!");
-          acaoCancelar(new ActionEvent());
+        try {
+            boolean sucesso = ControllerTelas.getAcesso().adicionarLoteEstoque(ControllerTelas.getFuncionarioPadrao() ,
+            campoNomeMedicamento.getText(), Date.valueOf(localDate), quantidade);
+            if(!sucesso){
+                System.out.println("Medicamento nao cadastrado, cadastre primeiro");
+                chamaTelaMedicamento(campoNomeMedicamento.getText(), Date.valueOf(localDate), quantidade);
+            }else{
+                System.out.println("Lote adicionado com sucesso!");
+                acaoCancelar(new ActionEvent());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -26,14 +26,14 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" hvalue="0.28" pannable="true" prefHeight="402.0" prefWidth="620.0">
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" hvalue="0.28" pannable="true" prefHeight="408.0" prefWidth="620.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-border-color: #B0BEC5; -fx-border-radius: 15;">
                <content>
                   
-                     <VBox fx:id="paneNotificacoes" fillWidth="true" prefWidth="500.0" spacing="7.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-border-color: #B0BEC5; -fx-border-radius: 15;">
+                     <VBox fx:id="paneNotificacoes" alignment="CENTER" fillWidth="true" minHeight="400.0" prefWidth="500.0" spacing="7.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-border-color: #B0BEC5; -fx-border-radius: 15;">
                      <children>
                         <Label fx:id="labelAviso" textFill="#909090"> 
                               <font>
-                                 <Font size="18.0" />
+                                 <Font size="19.0" />
                               </font>
                         </Label>
                      </children>

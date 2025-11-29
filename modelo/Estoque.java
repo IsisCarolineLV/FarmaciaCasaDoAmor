@@ -91,7 +91,7 @@ public class Estoque {
     Date hoje = Date.valueOf(LocalDate.now());
     ArrayList<Lote> lotesVencidos = new ArrayList<>();
     for (Lote l : lotes) {
-      if (l.getValidade().before(hoje))
+      if (l.getValidade().before(hoje) || l.getValidade().equals(hoje))
         lotesVencidos.add(l);
     }
     return lotesVencidos;

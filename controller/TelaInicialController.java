@@ -114,6 +114,7 @@ public class TelaInicialController{
 
     @FXML
     void irParaHistorico(ActionEvent event) {
+        //chamar tela de historico
         System.out.println(ControllerTelas.getAcesso().imprimirHistorico());
     }
 }

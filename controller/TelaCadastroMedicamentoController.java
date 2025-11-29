@@ -82,7 +82,9 @@ public class TelaCadastroMedicamentoController{
           System.out.println("Medicamento adicionado com sucesso!");
 
           if(this.validade != null){
-            boolean sucesso = ControllerTelas.getAcesso().adicionarLoteEstoque(nome, this.validade, this.quantidadePorCartela);
+            boolean sucesso = ControllerTelas.getAcesso().adicionarLoteEstoque(ControllerTelas.getFuncionarioPadrao(),
+            nome, this.validade, this.quantidadePorCartela);
+            
             if(sucesso){
               System.out.println("Lote adicionado com sucesso!");
             }else{
