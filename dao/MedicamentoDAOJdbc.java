@@ -51,6 +51,28 @@ public class MedicamentoDAOJdbc implements MedicamentoDAO {
         }
         return null;
     }
+    
+    @Override
+    public Medicamento buscarPorNome(String nome) throws Exception{
+        String sql = "SELECT * FROM Medicamento WHERE Nome = ?";
+
+        try(Connection con = connectionFactory.getConnection(); 
+            PreparedStatement stmt = con.prepareStatement(sql)){
+
+            stmt.setString(1, nome);
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()){
+                return new Medicamento(
+                    rs.getString("Nome"),
+                    rs.getInt("QuantidadeRemedio"),
+                    "",
+                    rs.getInt("IDRemedio")
+                );
+            }
+        }
+        return null;
+    }
 
     @Override
     public List<Medicamento> listarTodos() throws Exception {

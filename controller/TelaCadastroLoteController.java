@@ -14,12 +14,17 @@ import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 
+import service.FarmaciaService;
+import modelo.Funcionario;
+
 public class TelaCadastroLoteController{
 
     @FXML private TextField campoNomeMedicamento;
     @FXML private TextField campoQuantidade;
     @FXML private DatePicker campoValidade;
     @FXML private Label labelErroQtd;
+
+    private FarmaciaService service = new FarmaciaService();
 
     @FXML
     public void acaoSalvar(ActionEvent event) {
@@ -33,32 +38,30 @@ public class TelaCadastroLoteController{
         }
 
         labelErroQtd.setVisible(false);
-        LocalDate localDate = campoValidade.getValue();
-        //se formos usar a logica de um so estoque pra tudo, descomentar a linha abaixo
-        //ControllerEstoque.adicionarLote(campoNomeMedicamento.getText(), Integer.parseInt(textoQtd), Date.valueOf(localDate));
-        //System.out.println( ControllerEstoque.imprimirLotes());
-
-        // Aqui vai vir a logica de add no BD por ex, como nao tem ainda, e uma simulacao de como seriam os campos etc etc
-
-        System.out.println("Salvando Lote...");
-        System.out.println("Medicamento: " + campoNomeMedicamento.getText());
         
-        int quantidade = Integer.parseInt(textoQtd); 
-        System.out.println("Qtd (Int): " + quantidade);
-        
-        System.out.println("Validade: " + campoValidade.getValue());
-
-        //adiciona o lote (precisamos fazer a logica de verificar se o funcionario tem acesso a isso)
         try {
-            boolean sucesso = ControllerTelas.getAcesso().adicionarLoteEstoque(ControllerTelas.getFuncionarioPadrao() ,
-            campoNomeMedicamento.getText(), Date.valueOf(localDate), quantidade);
-            if(!sucesso){
-                System.out.println("Medicamento nao cadastrado, cadastre primeiro");
-                chamaTelaMedicamento(campoNomeMedicamento.getText(), Date.valueOf(localDate), quantidade);
-            }else{
-                System.out.println("Lote adicionado com sucesso!");
+            String nomeMedicamento = campoNomeMedicamento.getText();
+            int quantidade = Integer.parseInt(textoQtd);
+            Date dataValidade = Date.valueOf(campoValidade.getValue());
+
+            Funcionario funcionario = ControllerTelas.getFuncionarioPadrao();
+
+            //Passa o NOME para o serviço buscar o ID sozinho
+            boolean sucesso = service.cadastrarLote(
+                nomeMedicamento,
+                dataValidade,
+                quantidade,
+                funcionario
+            );
+
+            if (sucesso) {
+                System.out.println("Lote cadastrado com sucesso!");
                 acaoCancelar(event);
+            } else {
+                System.out.println("Medicamento não encontrado. Redirecionando para cadastro...");
+                chamaTelaMedicamento(nomeMedicamento, dataValidade, quantidade);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
