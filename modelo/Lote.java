@@ -2,7 +2,6 @@ package modelo;
 
 import java.sql.Date;
 
-/*como eu suponho que vai ter so um estoque nao acho que vai ter que criar um atributo de estoque*/ 
 public class Lote {
   private int idLote;  // ID LOTeeeeeee
   private int quantidadeComprimidos;
