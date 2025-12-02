@@ -18,16 +18,14 @@ public class LoteDAOJdbc implements LoteDAO {
 
     @Override
     public void salvar(Lote lote) throws Exception {
-        // Assume que existe um Estoque com ID 1 criado manualmente no banco
-        String sql = "INSERT INTO Lote (IDLote, Validade, QuantidadeComprimidos, IDRemedio, IDEstoque) VALUES (?, ?, ?, ?, 1)";
+        String sql = "INSERT INTO Lote (Validade, QuantidadeComprimidos, IDRemedio, IDEstoque) VALUES (?, ?, ?, ?, 1)";
         
         try (Connection con = connectionFactory.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             
-            stmt.setInt(1, lote.getIdLote());
-            stmt.setDate(2, lote.getValidade());
-            stmt.setInt(3, lote.getQuantidadeComprimidos());
-            stmt.setInt(4, lote.getMedicamento().getCodigoDeBarras());
+            stmt.setDate(1, lote.getValidade());
+            stmt.setInt(2, lote.getQuantidadeComprimidos());
+            stmt.setInt(3, lote.getMedicamento().getCodigoDeBarras());
             
             stmt.execute();
         }

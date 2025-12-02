@@ -1,5 +1,4 @@
 CREATE DATABASE if not exists Farmacia;
-
 USE Farmacia;
 
 CREATE TABLE Funcionario (
@@ -11,15 +10,17 @@ CREATE TABLE Estoque (
     IDEstoque INT PRIMARY KEY
 );
 
+INSERT IGNORE INTO Estoque (IDEstoque) VALUES (1); --Insere o estoque 1
+
 CREATE TABLE Medicamento (
-    IDRemedio INT PRIMARY KEY,
+    IDRemedio INT PRIMARY KEY, --O codigo de barras
     Nome VARCHAR(100) NOT NULL,
     QuantidadeRemedio INT,
     ValidadeRemedio DATE  
 );
 
 CREATE TABLE Lote (
-    IDLote INT PRIMARY KEY,
+    IDLote INT PRIMARY KEY AUTO_INCREMENT,
     Validade DATE NOT NULL,
     QuantidadeComprimidos INT NOT NULL,
     IDRemedio INT NOT NULL,
