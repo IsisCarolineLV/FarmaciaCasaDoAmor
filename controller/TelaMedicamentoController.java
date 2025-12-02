@@ -22,6 +22,9 @@ public class TelaMedicamentoController {
     private Label labelNome;
 
     @FXML
+    private Label labelTitulo;
+
+    @FXML
     private Label labelQuantidade;
 
     @FXML

@@ -9,22 +9,22 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelaCadastroLoteController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelaMedicamentoController">
    
    <left>
-      <VBox prefHeight="600.0" prefWidth="68.0" style="-fx-background-color: #5F8696; -fx-background-radius: 0 30 30 0;" BorderPane.alignment="CENTER" />
+      <VBox prefHeight="600.0" prefWidth="200.0" style="-fx-background-color: #5F8696; -fx-background-radius: 0 30 30 0;" BorderPane.alignment="CENTER" />
    </left>
    
    <center>
       <VBox alignment="CENTER" style="-fx-background-color: #E0E7EB;" BorderPane.alignment="CENTER">
          <children>
             
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="526.0" prefWidth="720.0" style="-fx-background-color: white; -fx-background-radius: 20;">
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="482.0" prefWidth="655.0" style="-fx-background-color: white; -fx-background-radius: 20;">
                <children>
                   
                   <HBox alignment="CENTER" prefHeight="60.0" style="-fx-background-color: #8DA6B0; -fx-background-radius: 20 20 0 0;">
                      <children>
-                        <Label text="Nome do medicamento" textFill="WHITE">
+                        <Label fx:id="labelTitulo" text="Nome do medicamento" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -32,7 +32,7 @@
                      </children>
                   </HBox>
                   
-                  <VBox alignment="CENTER" prefHeight="467.0" prefWidth="720.0" spacing="25.0">
+                  <VBox alignment="CENTER" prefHeight="422.0" prefWidth="642.0" spacing="25.0">
                      <padding>
                         <Insets bottom="40.0" left="50.0" right="50.0" top="40.0" />
                      </padding>
@@ -41,7 +41,7 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" spacing="5.0">
                                  <children>
-                                    <Label prefHeight="30.0" prefWidth="224.0" text="Nome do medicamento:" textFill="#5e6d73">
+                                    <Label prefHeight="30.0" prefWidth="218.0" text="Nome do medicamento:" textFill="#5e6d73">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
@@ -60,7 +60,7 @@
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="labelComposicao" lineSpacing="1.0" prefHeight="44.0" prefWidth="495.0" text="exemplo composição" textFill="#8da6b0" wrapText="true">
+                                    <Label fx:id="labelComposicao" lineSpacing="1.0" prefHeight="44.0" prefWidth="442.0" text="exemplo composição" textFill="#8da6b0" wrapText="true">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
@@ -74,7 +74,7 @@
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="labelQuantidade" lineSpacing="1.0" prefHeight="30.0" prefWidth="245.0" text="100" textFill="#8da6b0">
+                                    <Label fx:id="labelQuantidade" lineSpacing="1.0" prefHeight="30.0" prefWidth="163.0" text="100" textFill="#8da6b0">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
@@ -98,7 +98,7 @@
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="labelEstoqueCaixas" lineSpacing="1.0" prefHeight="30.0" prefWidth="230.0" text="1 caixa" textFill="#8da6b0">
+                                    <Label fx:id="labelEstoqueCaixas" lineSpacing="1.0" prefHeight="30.0" prefWidth="155.0" text="1 caixa" textFill="#8da6b0">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
