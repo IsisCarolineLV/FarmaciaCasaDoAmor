@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -60,7 +61,21 @@ public class TelaInicialController{
             
             // 3. Trocar a Cena
             Stage stage = (Stage) btnPesquisar.getScene().getWindow(); 
-            stage.setScene(new Scene(root, 900, 600)); 
+
+            boolean fullscreen = stage.isFullScreen();
+            boolean maximizado = stage.isMaximized();
+            double largura = stage.getWidth();
+            double altura = stage.getHeight();
+
+            stage.setScene(new Scene(root));
+
+            if (maximizado || fullscreen){
+                stage.setFullScreen(fullscreen);
+                stage.setMaximized(maximizado);
+            }else{
+              stage.setWidth(largura);
+              stage.setHeight(altura);
+            }
             
         } catch (Exception e) {
             System.out.println("Erro ao carregar a tela de resultados.");
@@ -76,7 +91,8 @@ public class TelaInicialController{
     
     @FXML
     public void irParaNotificacoes(MouseEvent event) {
-        try {
+        irPraNovaTela(event, "/gui/TelaNotificacoes.fxml");
+        /*try {
             Parent root = FXMLLoader.load(getClass().getResource("/gui/TelaNotificacoes.fxml"));
             
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -85,36 +101,66 @@ public class TelaInicialController{
         } catch (Exception e) {
             System.out.println("Erro ao carregar notificações.");
             e.printStackTrace();
-        }
+        }*/
     }
 
     @FXML
     public void irParaCadastroLote(javafx.event.ActionEvent event) {
-        try {
+        irPraNovaTela(event, "/gui/TelaCadastroLote.fxml");
+        /*try {
             Parent root = FXMLLoader.load(getClass().getResource("/gui/TelaCadastroLote.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root, 900, 600));
         } catch (Exception e) {
             System.out.println("Erro ao abrir tela de cadastro.");
             e.printStackTrace();
-        }
+        }*/
     }
 
     @FXML
     public void irParaCadastroMedicamento(javafx.event.ActionEvent event) {
-        try {
+        irPraNovaTela(event, "/gui/TelaCadastroMedicamento.fxml");
+        /*try {
             Parent root = FXMLLoader.load(getClass().getResource("/gui/TelaCadastroMedicamento.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root, 900, 600));
+            stage.setScene(new Scene(root));
+            //stage.setScene(new Scene(root, 900, 600));
         } catch (Exception e) {
             System.out.println("Erro ao abrir tela de cadastro de medicamento.");
             e.printStackTrace();
-        }
+        }*/
     }
 
     @FXML
     void irParaHistorico(ActionEvent event) {
         //chamar tela de historico
         System.out.println(ControllerTelas.getAcesso().imprimirHistorico());
+    }
+
+    //criei um metodo especifico para ele trocar de tela mantendo o tamanho da janela anterior
+    public void irPraNovaTela(Event event, String caminhoTela){
+        
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(caminhoTela));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            boolean fullscreen = stage.isFullScreen();
+            boolean maximizado = stage.isMaximized();
+            double largura = stage.getWidth();
+            double altura = stage.getHeight();
+
+            stage.setScene(new Scene(root));
+
+            if (maximizado || fullscreen){
+                stage.setFullScreen(fullscreen);
+                stage.setMaximized(maximizado);
+            }else{
+              stage.setWidth(largura);
+              stage.setHeight(altura);
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao abrir tela "+caminhoTela);
+            e.printStackTrace();
+        }
     }
 }

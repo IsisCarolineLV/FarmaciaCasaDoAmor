@@ -10,8 +10,8 @@ public class Lote {
   private Medicamento medicamento;
   private static int cont=0;
 
-  public Lote(int quantidadeComprimidos, Date validade, Medicamento medicamento){
-    this.quantidadeComprimidos=quantidadeComprimidos;
+  public Lote(int quantidadeCaixa, Date validade, Medicamento medicamento){
+    quantidadeComprimidos=quantidadeCaixa*medicamento.getQuantidadePorCartela();
     this.validade= validade;
     this.medicamento=medicamento;
     idLote = cont++;
