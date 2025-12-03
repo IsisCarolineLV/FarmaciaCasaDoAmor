@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class ConnectionFactory {
 
     private static final String URL = "jdbc:mysql://localhost:3306/Farmacia?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC";
-    private static final String USER = "root";
+    private static final String USER = "admin";
     private static final String PASS = "1234";
 
     public Connection getConnection() {
