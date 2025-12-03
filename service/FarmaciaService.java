@@ -8,6 +8,8 @@ import modelo.Funcionario;
 import modelo.Lote;
 import modelo.Medicamento;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FarmaciaService {
 
@@ -66,6 +68,15 @@ public class FarmaciaService {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public List<Medicamento> buscarMedicamentos(String termo) {
+        try {
+            return medicamentoDAO.buscarPorNomeSemelhante(termo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 }

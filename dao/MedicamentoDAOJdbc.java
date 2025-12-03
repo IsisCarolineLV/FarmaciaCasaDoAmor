@@ -94,4 +94,27 @@ public class MedicamentoDAOJdbc implements MedicamentoDAO {
         }
         return lista;
     }
+
+    @Override
+    public List<Medicamento> buscarPorNomeSemelhante(String termo) throws Exception {
+        String sql = "SELECT * FROM Medicamento WHERE Nome LIKE ?";
+        List<Medicamento> lista = new ArrayList<>();
+        
+        try (Connection con = connectionFactory.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            
+            stmt.setString(1, "%" + termo + "%"); 
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                lista.add(new Medicamento(
+                    rs.getString("Nome"),
+                    rs.getInt("QuantidadeRemedio"),
+                    "", 
+                    rs.getInt("IDRemedio")
+                ));
+            }
+        }
+        return lista;
+    }
 }
