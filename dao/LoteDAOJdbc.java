@@ -30,13 +30,41 @@ public class LoteDAOJdbc implements LoteDAO {
             stmt.execute();
         }
     }
+    
+    public List<Lote> listarTodos() throws Exception {
+        String sql = "SELECT L.IDLote, L.Validade, L.QuantidadeComprimidos, L.IDRemedio, M.Nome " +
+                     "FROM Lote L " +
+                     "INNER JOIN Medicamento M ON L.IDRemedio = M.IDRemedio";
+
+        List<Lote> lotes = new ArrayList<>();
+
+        try (Connection con = connectionFactory.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Medicamento med = new Medicamento();
+                med.setCodigoDeBarras(rs.getInt("IDRemedio"));
+                med.setNome(rs.getString("Nome"));
+
+                Lote l = new Lote(
+                    rs.getInt("QuantidadeComprimidos"),
+                    rs.getDate("Validade"),
+                    med
+                );
+                l.setIdLote(rs.getInt("IDLote"));
+                
+                lotes.add(l);
+            }
+        }
+        return lotes;
+    }
 
     @Override
     public List<Lote> listarPorMedicamento(int codigoBarras) throws Exception {
         String sql = "SELECT * FROM Lote WHERE IDRemedio = ?";
         List<Lote> lotes = new ArrayList<>();
         
-        // Busca o medicamento para preencher o objeto Lote
         MedicamentoDAO medDao = new MedicamentoDAOJdbc();
         Medicamento med = medDao.buscarPorCodigoBarras(codigoBarras);
 
@@ -60,4 +88,5 @@ public class LoteDAOJdbc implements LoteDAO {
         }
         return lotes;
     }
+    
 }
