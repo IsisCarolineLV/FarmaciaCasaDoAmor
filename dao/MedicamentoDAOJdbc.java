@@ -117,4 +117,34 @@ public class MedicamentoDAOJdbc implements MedicamentoDAO {
         }
         return lista;
     }
+    
+ // Atualiza apenas a quantidade
+    public void atualizarQuantidade(int idRemedio, int novaQuantidade) throws Exception {
+        String sql = "UPDATE Medicamento SET QuantidadeRemedio = ? WHERE IDRemedio = ?";
+        try (Connection con = connectionFactory.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, novaQuantidade);
+            stmt.setInt(2, idRemedio);
+            stmt.execute();
+        }
+    }
+
+    public void remover(int idRemedio) throws Exception {
+        String sqlLote = "DELETE FROM Lote WHERE IDRemedio = ?";
+        
+        String sqlMedicamento = "DELETE FROM Medicamento WHERE IDRemedio = ?";
+
+        try (Connection con = connectionFactory.getConnection()) {
+            
+            try (PreparedStatement stmtLote = con.prepareStatement(sqlLote)) {
+                stmtLote.setInt(1, idRemedio);
+                stmtLote.execute();
+            } 
+
+            try (PreparedStatement stmtMed = con.prepareStatement(sqlMedicamento)) {
+                stmtMed.setInt(1, idRemedio);
+                stmtMed.execute();
+            } 
+        }
+    }
 }
