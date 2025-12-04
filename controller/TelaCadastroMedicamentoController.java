@@ -13,6 +13,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import service.FarmaciaService;
+import modelo.Funcionario;
+
 public class TelaCadastroMedicamentoController{
 
     @FXML
@@ -33,6 +36,8 @@ public class TelaCadastroMedicamentoController{
     //lote enviado da tela cadastro:
     private Date validade;
     private int quantidadePorCartela;
+
+    private FarmaciaService service = new FarmaciaService();
 
     @FXML
     void acaoCancelar(ActionEvent event) {
@@ -73,48 +78,26 @@ public class TelaCadastroMedicamentoController{
         int quantidade = Integer.parseInt(textoQtd);
         String composicao  =  campoComposicao.getText();
         int codigoDeBarras = Integer.parseInt(campoCodigoDeBarras.getText());
-        // Aqui vai vir a logica de add no BD por ex, como nao tem ainda, e uma simulacao de como seriam os campos etc etc
-        System.out.println("Salvando Lote...");
-        System.out.println("Medicamento: " + nome);
         
-        System.out.println("Qtd (Int): " + quantidade);
-        
-        System.out.println("Composicao: " + composicao);
-
-        System.out.println("Codigo de Barras: " + codigoDeBarras);
-        /*try {
-          ControllerEstoque.adicionarMedicamento(campoNomeMedicamento.getText(), quantidade, campoComposicao.getText() , Integer.parseInt(campoCodigoDeBarras.getText()));
-        } catch (NumberFormatException e) {
-          e.printStackTrace();
-        } catch (Exception e) {
-          e.printStackTrace();
-        } */
-        //adiciona o medicamento (precisamos fazer a logica de verificar se o funcionario tem acesso a isso)
         try{
-          ControllerTelas.getAcesso().adicionarMedicamento(ControllerTelas.getFuncionarioPadrao() , nome, quantidade, composicao, codigoDeBarras);
-          System.out.println("Medicamento adicionado com sucesso!");
+          Funcionario funcionario = ControllerTelas.getFuncionarioPadrao();
+          boolean sucesso = service.cadastrarMedicamento(nome, quantidade, composicao, codigoDeBarras, funcionario);
 
-          if(this.validade != null){
-            boolean sucesso = ControllerTelas.getAcesso().adicionarLoteEstoque(ControllerTelas.getFuncionarioPadrao(),
-            nome, this.validade, this.quantidadePorCartela);
-            
-            if(sucesso){
-              System.out.println("Lote adicionado com sucesso!");
-            }else{
-              System.out.println("Erro ao adicionar o lote associado ao medicamento cadastrado.");
+          if(sucesso){
+            System.out.println("Medicamento salvo no Banco de Dados");
+
+            if(this.validade != null){
+              boolean sucessoLote = service.cadastrarLote(nome, codigoDeBarras, this.validade, this.quantidadePorCartela, funcionario);
+              if(sucessoLote) System.out.println("Lote salvo no Banco de Dados");
             }
-          }
-          validade = null;
-          quantidadePorCartela = 0;
 
-        } catch (IOException e) {
+            acaoCancelar(event);
+          } else{
+            System.out.println("Erro ao salvar");
+          }
+        } catch(Exception e){
           e.printStackTrace();
-        } catch (Exception e) {
-          System.out.println("Erro ao adicionar medicamento. Verifique os dados inseridos.");
-          e.printStackTrace();
-        }finally{
-          acaoCancelar(event);
-        } 
+        }
     }
 
     public void setDadosLote(String nome, Date validade, int quantidadePorCartela){

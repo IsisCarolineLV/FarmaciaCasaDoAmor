@@ -6,17 +6,35 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import java.util.List;
+
+import modelo.Medicamento;
+
 import java.io.IOException;
+
+import service.FarmaciaService;
 
 public class TelaResultadosController{
 
     @FXML
     private Label labelMensagem;
 
+    private FarmaciaService service = new FarmaciaService();
+
     public void definirTermoPesquisado(String termo) {
-        // Ta exibindo uma msg fixa pq ainda nao tem a logica com o acesso, bd etc etc
         System.out.println("Pesquisando por: " + termo);
-        labelMensagem.setText("Nenhum medicamento encontrado");
+
+        List<Medicamento> resultados = service.buscarMedicamentos(termo);
+
+        if(resultados.isEmpty()){
+            labelMensagem.setText("Nenhum medicamento encontrado");
+        } else{
+            StringBuilder texto = new StringBuilder("Encontrados:\n");
+            for(Medicamento m : resultados){
+                texto.append("- ").append(m.getNome()).append("\n");
+            }
+            labelMensagem.setText(texto.toString());
+        }
     }
 
     @FXML
