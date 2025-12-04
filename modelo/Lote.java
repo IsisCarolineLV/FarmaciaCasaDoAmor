@@ -9,6 +9,8 @@ public class Lote {
   private Date validade;
   private Medicamento medicamento;
 
+  public Lote() {}
+  
   public Lote(int quantidadeComprimidos, Date validade, Medicamento medicamento){
     this.quantidadeComprimidos=quantidadeComprimidos;
     this.validade= validade;
