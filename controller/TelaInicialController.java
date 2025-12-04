@@ -163,7 +163,7 @@ public class TelaInicialController {
             
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     private void configurarFiltroPesquisa() {
@@ -199,6 +199,6 @@ public class TelaInicialController {
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
     }
 }
