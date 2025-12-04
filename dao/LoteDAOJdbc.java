@@ -18,7 +18,7 @@ public class LoteDAOJdbc implements LoteDAO {
 
     @Override
     public void salvar(Lote lote) throws Exception {
-        String sql = "INSERT INTO Lote (Validade, QuantidadeComprimidos, IDRemedio, IDEstoque) VALUES (?, ?, ?, ?, 1)";
+        String sql = "INSERT INTO Lote (Validade, QuantidadeComprimidos, IDRemedio, IDEstoque) VALUES (?, ?, ?, 1)";
         
         try (Connection con = connectionFactory.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {

@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public class ConnectionFactory {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/Farmacia?useTimezone=true&serverTimezone=UTC";
-    private static final String USER = "admin";
+    private static final String URL = "jdbc:postgresql://localhost:5432/Farmacia";
+    private static final String USER = "postgres";
     private static final String PASS = "1234";
 
     public Connection getConnection() {
