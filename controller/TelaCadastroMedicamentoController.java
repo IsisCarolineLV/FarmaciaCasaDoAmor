@@ -44,7 +44,20 @@ public class TelaCadastroMedicamentoController{
       try {
             Parent root = FXMLLoader.load(getClass().getResource("/gui/TelaInicial.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root, 900, 600));
+            boolean fullscreen = stage.isFullScreen();
+            boolean maximizado = stage.isMaximized();
+            double largura = stage.getWidth();
+            double altura = stage.getHeight();
+
+            stage.setScene(new Scene(root));
+
+            if (maximizado || fullscreen){
+                stage.setFullScreen(fullscreen);
+                stage.setMaximized(maximizado);
+            }else{
+              stage.setWidth(largura);
+              stage.setHeight(altura);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

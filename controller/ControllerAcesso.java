@@ -153,7 +153,7 @@ public class ControllerAcesso {
     //cria o novo lote
     Lote novoLote = new Lote(quantidadeComprimidos, validade, m);
     e.adicionarLote(novoLote);
-    historico.adicionarAcesso(new Acesso("Adicionou lote", new Date(System.currentTimeMillis()), f, e, novoLote));
+    historico.adicionarAcesso(new Acesso("Adicionou lote", new Date(System.currentTimeMillis()), f, novoLote));
     return true;
   }
   /*public Lote pesquisarLote(int idRemedio, Date validade) {
@@ -265,7 +265,7 @@ public class ControllerAcesso {
       throw new Exception("Esse lote nao existe no sistema!");
 
     String a = atualiza(qualTipo, l, novoDado);
-    historico.adicionarAcesso(new Acesso(a, new Date(System.currentTimeMillis()), f, getEstoque(l.getMedicamento()), l));
+    historico.adicionarAcesso(new Acesso(a, new Date(System.currentTimeMillis()), f, l));
   }
 
   // sobrecarga pra pesquisar pelo id
@@ -281,7 +281,7 @@ public class ControllerAcesso {
 
     Lote l = e.pesquisarLote(validade); //pesquisa pela validade
     String a = atualiza(qualTipo, l, novoDado);
-    historico.adicionarAcesso(new Acesso(a, new Date(System.currentTimeMillis()), f, getEstoque(l.getMedicamento()), l));
+    historico.adicionarAcesso(new Acesso(a, new Date(System.currentTimeMillis()), f, l));
   }
 
   private <T> String atualiza(int qualTipo, Lote l, T novoDado) throws Exception {
@@ -315,7 +315,7 @@ public class ControllerAcesso {
 
     Lote lote = e.pesquisarLote(validade);
     e.darBaixa(lote.getIdLote());
-    historico.adicionarAcesso(new Acesso("Deu baixa", new Date(System.currentTimeMillis()), f, e, lote));
+    historico.adicionarAcesso(new Acesso("Deu baixa", new Date(System.currentTimeMillis()), f, lote));
   }
 
   public ArrayList<Lote> getVencidos(){

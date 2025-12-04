@@ -5,12 +5,13 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelaCadastroLoteController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelaCadastroLoteController">
    
    <left>
       <VBox prefWidth="200.0" style="-fx-background-color: #5F8696; -fx-background-radius: 0 30 30 0;" BorderPane.alignment="CENTER" />
@@ -41,9 +42,9 @@
                         
                         <TextField fx:id="campoNomeMedicamento" prefHeight="45.0" promptText="Nome do Medicamento ou Código" style="-fx-background-color: #D3D3D3; -fx-background-radius: 20; -fx-padding: 0 20;" />
                         
-                        <TextField fx:id="campoQuantidade" prefHeight="45.0" promptText="Quantidade de Comprimidos" style="-fx-background-color: #D3D3D3; -fx-background-radius: 20; -fx-padding: 0 20;" />
+                        <TextField fx:id="campoQuantidade" prefHeight="45.0" promptText="Quantidade de Caixas" style="-fx-background-color: #D3D3D3; -fx-background-radius: 20; -fx-padding: 0 20;" />
                         
-                        <Label fx:id="labelErroQtd" text="Permitido apenas números!" textFill="RED" visible="false"></Label>
+                        <Label fx:id="labelErroQtd" text="Permitido apenas números!" textFill="RED" visible="false" />
                         
                         <DatePicker fx:id="campoValidade" prefHeight="45.0" prefWidth="600.0" promptText="Data de Validade" style="-fx-background-color: #D3D3D3; -fx-font-size: 14;" />
 
