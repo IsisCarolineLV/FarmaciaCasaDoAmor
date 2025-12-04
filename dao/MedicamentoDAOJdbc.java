@@ -22,9 +22,9 @@ public class MedicamentoDAOJdbc implements MedicamentoDAO {
         try (Connection con = connectionFactory.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             
-            stmt.setInt(1, m.getCodigoDeBarras()); // IDRemedio
+            stmt.setInt(1, m.getCodigoDeBarras()); 
             stmt.setString(2, m.getNome());
-            stmt.setInt(3, m.getQuantidadePorCartela()); // QuantidadeRemedio
+            stmt.setInt(3, m.getQuantidadePorCartela());
             
             stmt.execute();
         }
@@ -44,7 +44,7 @@ public class MedicamentoDAOJdbc implements MedicamentoDAO {
                 return new Medicamento(
                     rs.getString("Nome"),
                     rs.getInt("QuantidadeRemedio"),
-                    "", // Composicao vazia pois não vem do banco
+                    "", 
                     rs.getInt("IDRemedio")
                 );
             }
@@ -118,7 +118,6 @@ public class MedicamentoDAOJdbc implements MedicamentoDAO {
         return lista;
     }
     
- // Atualiza apenas a quantidade
     public void atualizarQuantidade(int idRemedio, int novaQuantidade) throws Exception {
         String sql = "UPDATE Medicamento SET QuantidadeRemedio = ? WHERE IDRemedio = ?";
         try (Connection con = connectionFactory.getConnection();

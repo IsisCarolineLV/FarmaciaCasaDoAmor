@@ -6,6 +6,10 @@ public class Medicamento {
   private int quantidadePorCartela;
   //private Date validadeRemedio; //nao entendi pq tem validade no medicamento, mas ta ai
   private int codigoDeBarras;
+  
+  
+  public Medicamento() {
+  }
 
   public Medicamento (String nome, int quantidadePorCartela, String composicao,int codigoDeBarras){
     this.nome = nome;

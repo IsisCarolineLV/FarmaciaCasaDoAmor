@@ -1,5 +1,13 @@
 package controller;
 
+import java.util.List;
+import java.util.Optional;
+import dao.MedicamentoDAOJdbc; 
+import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -7,160 +15,190 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import modelo.Acesso;
-//import modelo.Estoque;
+import modelo.Medicamento;
 
-public class TelaInicialController{
+public class TelaInicialController {
 
-    @FXML
-    private TextField campoPesquisa;
+    @FXML private TextField campoPesquisa;
+    @FXML private Circle circleAtencao;
 
-    @FXML
-    private Button btnPesquisar;
+    @FXML private TableView<Medicamento> tabelaMedicamentos;
+    @FXML private TableColumn<Medicamento, String> colNome;
+    @FXML private TableColumn<Medicamento, Integer> colCodigo;
+    @FXML private TableColumn<Medicamento, Integer> colQuantidade;
 
-    @FXML
-    private Button btnCancelar;
-
-    @FXML
-    private Circle circleAtencao;
-
-    @SuppressWarnings("unused")
-	private Acesso sistemaAcesso;
-
-    public void setSistemaAcesso(Acesso acesso) {
-        this.sistemaAcesso = acesso;
-    }
+    private ObservableList<Medicamento> masterData = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
-        System.out.println("Tela Inicial carregada.");
-        ControllerTelas.gerarNotificacoes();
-        if(ControllerTelas.temNotificacoes()) {
-        	circleAtencao.setVisible(true);
-        } else {
-        	circleAtencao.setVisible(false);
-        }
-        //ControllerTelas telas = new ControllerTelas();
-        //ControllerEstoque.setEstoque(new Estoque());
-    }
-
-    @FXML
-    public void acaoPesquisar() {
-        String termo = campoPesquisa.getText();
+        configurarTabela();
+        carregarDadosDoBanco();
+        configurarFiltroPesquisa();
         
+        if (circleAtencao != null) circleAtencao.setVisible(false);
+    }
+
+    private void configurarTabela() {
+        colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colCodigo.setCellValueFactory(new PropertyValueFactory<>("codigoDeBarras"));
+        colQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidadePorCartela"));
+
+        tabelaMedicamentos.setRowFactory(tableView -> {
+            final TableRow<Medicamento> row = new TableRow<>();
+            final ContextMenu contextMenu = new ContextMenu();
+            
+            MenuItem itemVerLotes = new MenuItem("Ver Lotes");
+            itemVerLotes.setOnAction(event -> {
+                if (row.getItem() != null) abrirTelaLotes(row.getItem());
+            });
+            MenuItem itemRemover = new MenuItem("Remover Estoque");
+            itemRemover.setOnAction(event -> {
+                if (row.getItem() != null) acaoRetirarEstoque(row.getItem());
+            });
+            
+            contextMenu.getItems().addAll(itemVerLotes, itemRemover);
+
+            // Exibir apenas se a linha não estiver vazia
+            row.contextMenuProperty().bind(
+                Bindings.when(row.emptyProperty())
+                .then((ContextMenu)null)
+                .otherwise(contextMenu)
+            );
+            
+            return row;
+        });
+    }
+
+    // Abre a tela de visualização de lotes
+    private void abrirTelaLotes(Medicamento med) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/TelaResultados.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/TelaLotes.fxml"));
             Parent root = loader.load();
-            TelaResultadosController controller = loader.getController();
-            controller.definirTermoPesquisado(termo); 
             
-            // 3. Trocar a Cena
-            Stage stage = (Stage) btnPesquisar.getScene().getWindow(); 
-
-            boolean fullscreen = stage.isFullScreen();
-            boolean maximizado = stage.isMaximized();
-            double largura = stage.getWidth();
-            double altura = stage.getHeight();
-
+            // Passa o medicamento para o controller da nova tela
+            TelaLotesController controller = loader.getController();
+            controller.setMedicamento(med);
+            
+            Stage stage = new Stage();
+            stage.setTitle("Gerenciamento de Lotes - " + med.getNome());
             stage.setScene(new Scene(root));
-
-            if (maximizado || fullscreen){
-                stage.setFullScreen(fullscreen);
-                stage.setMaximized(maximizado);
-            }else{
-              stage.setWidth(largura);
-              stage.setHeight(altura);
-            }
-            
+            stage.show();
         } catch (Exception e) {
-            System.out.println("Erro ao carregar a tela de resultados.");
             e.printStackTrace();
+            mostrarAlerta("Erro", "Não foi possível abrir a tela de lotes.");
         }
     }
 
-    @FXML
-    public void acaoCancelar() {
-        campoPesquisa.clear();
-        System.out.println("Campos limpos.");
+    private void acaoRetirarEstoque(Medicamento med) {
+        TextInputDialog dialog = new TextInputDialog("1");
+        dialog.setTitle("Retirada de Estoque");
+        dialog.setHeaderText("Retirar itens de: " + med.getNome());
+        dialog.setContentText("Quantidade a remover:");
+
+        Optional<String> result = dialog.showAndWait();
+        
+        result.ifPresent(quantidadeString -> {
+            try {
+                int qtdRetirar = Integer.parseInt(quantidadeString);
+                
+                if (qtdRetirar <= 0) {
+                    mostrarAlerta("Erro", "Digite um número maior que zero.");
+                    return;
+                }
+                
+                if (qtdRetirar > med.getQuantidadePorCartela()) {
+                    mostrarAlerta("Erro", "Estoque insuficiente! Atual: " + med.getQuantidadePorCartela());
+                    return;
+                }
+
+                int novaQtd = med.getQuantidadePorCartela() - qtdRetirar;
+                MedicamentoDAOJdbc dao = new MedicamentoDAOJdbc();
+
+                if (novaQtd == 0) {
+                    dao.remover(med.getCodigoDeBarras());
+                    mostrarAlerta("Sucesso", "Estoque zerado. Medicamento removido.");
+                } else {
+                    dao.atualizarQuantidade(med.getCodigoDeBarras(), novaQtd);
+                    mostrarAlerta("Sucesso", "Retirados " + qtdRetirar + " itens.");
+                }
+
+                carregarDadosDoBanco();
+
+            } catch (NumberFormatException e) {
+                mostrarAlerta("Erro", "Digite apenas números inteiros.");
+            } catch (Exception e) {
+                mostrarAlerta("Erro Crítico", e.getMessage());
+                e.printStackTrace();
+            }
+        });
     }
     
-    @FXML
-    public void irParaNotificacoes(MouseEvent event) {
-        irPraNovaTela(event, "/gui/TelaNotificacoes.fxml");
-        /*try {
-            Parent root = FXMLLoader.load(getClass().getResource("/gui/TelaNotificacoes.fxml"));
-            
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root, 900, 600));
-            
-        } catch (Exception e) {
-            System.out.println("Erro ao carregar notificações.");
-            e.printStackTrace();
-        }*/
+    private void mostrarAlerta(String titulo, String msg) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
     }
 
-    @FXML
-    public void irParaCadastroLote(javafx.event.ActionEvent event) {
-        irPraNovaTela(event, "/gui/TelaCadastroLote.fxml");
-        /*try {
-            Parent root = FXMLLoader.load(getClass().getResource("/gui/TelaCadastroLote.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root, 900, 600));
-        } catch (Exception e) {
-            System.out.println("Erro ao abrir tela de cadastro.");
-            e.printStackTrace();
-        }*/
-    }
-
-    @FXML
-    public void irParaCadastroMedicamento(javafx.event.ActionEvent event) {
-        irPraNovaTela(event, "/gui/TelaCadastroMedicamento.fxml");
-        /*try {
-            Parent root = FXMLLoader.load(getClass().getResource("/gui/TelaCadastroMedicamento.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            //stage.setScene(new Scene(root, 900, 600));
-        } catch (Exception e) {
-            System.out.println("Erro ao abrir tela de cadastro de medicamento.");
-            e.printStackTrace();
-        }*/
-    }
-
-    @FXML
-    void irParaHistorico(ActionEvent event) {
-        //chamar tela de historico
-        System.out.println(ControllerTelas.getAcesso().imprimirHistorico());
-    }
-
-    //criei um metodo especifico para ele trocar de tela mantendo o tamanho da janela anterior
-    public void irPraNovaTela(Event event, String caminhoTela){
-        
+    private void carregarDadosDoBanco() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource(caminhoTela));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-            boolean fullscreen = stage.isFullScreen();
-            boolean maximizado = stage.isMaximized();
-            double largura = stage.getWidth();
-            double altura = stage.getHeight();
-
-            stage.setScene(new Scene(root));
-
-            if (maximizado || fullscreen){
-                stage.setFullScreen(fullscreen);
-                stage.setMaximized(maximizado);
-            }else{
-              stage.setWidth(largura);
-              stage.setHeight(altura);
-            }
+            MedicamentoDAOJdbc dao = new MedicamentoDAOJdbc(); 
+            List<Medicamento> lista = dao.listarTodos();
+            
+            masterData.clear();
+            if (lista != null) masterData.addAll(lista);
+            
         } catch (Exception e) {
-            System.out.println("Erro ao abrir tela "+caminhoTela);
             e.printStackTrace();
-        }
+        }*/
+    }
+
+    private void configurarFiltroPesquisa() {
+        FilteredList<Medicamento> filteredData = new FilteredList<>(masterData, p -> true);
+
+        campoPesquisa.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(med -> {
+                if (newValue == null || newValue.isEmpty()) return true;
+                String lower = newValue.toLowerCase();
+                if (med.getNome().toLowerCase().contains(lower)) return true;
+                return String.valueOf(med.getCodigoDeBarras()).contains(lower);
+            });
+        });
+
+        SortedList<Medicamento> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(tabelaMedicamentos.comparatorProperty());
+        tabelaMedicamentos.setItems(sortedData);
+    }
+ 
+    @FXML public void irParaNotificacoes(MouseEvent event) { navegar(event, "/gui/TelaNotificacoes.fxml"); }
+    @FXML public void irParaCadastroLote(ActionEvent event) { navegar(event, "/gui/TelaCadastroLote.fxml"); }
+    @FXML public void irParaCadastroMedicamento(ActionEvent event) { navegar(event, "/gui/TelaCadastroMedicamento.fxml"); }
+    @FXML void irParaHistorico(ActionEvent event) {
+        if(ControllerTelas.getAcesso() != null) System.out.println(ControllerTelas.getAcesso().imprimirHistorico());
+    }
+    
+    private void navegar(javafx.event.Event event, String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root, 900, 600));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
     }
 }
