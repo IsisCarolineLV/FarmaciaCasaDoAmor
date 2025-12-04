@@ -1,5 +1,11 @@
-CREATE DATABASE if not exists Farmacia;
-USE Farmacia;
+-- 1. Derruba o banco se ele já existir
+DROP DATABASE IF EXISTS "Farmacia";
+
+-- 2. Cria o banco de dados
+CREATE DATABASE "Farmacia";
+
+-- 3. Conecta no banco recém-criado (Substituto do 'USE Farmacia;')
+\c "Farmacia";
 
 CREATE TABLE Funcionario (
     CPF VARCHAR(14) PRIMARY KEY,
@@ -10,7 +16,8 @@ CREATE TABLE Estoque (
     IDEstoque INT PRIMARY KEY
 );
 
-INSERT IGNORE INTO Estoque (IDEstoque) VALUES (1); -- Insere o estoque 1
+-- Insere o estoque 1
+INSERT INTO Estoque (IDEstoque) VALUES (1);
 
 CREATE TABLE Medicamento (
     IDRemedio INT PRIMARY KEY, -- O codigo de barras
@@ -20,7 +27,7 @@ CREATE TABLE Medicamento (
 );
 
 CREATE TABLE Lote (
-    IDLote INT PRIMARY KEY AUTO_INCREMENT,
+    IDLote SERIAL PRIMARY KEY, -- SERIAL substitui AUTO_INCREMENT
     Validade DATE NOT NULL,
     QuantidadeComprimidos INT NOT NULL,
     IDRemedio INT NOT NULL,
@@ -32,7 +39,7 @@ CREATE TABLE Lote (
 CREATE TABLE Acessa (
     IDEstoque INT,
     CPF_Funcionario VARCHAR(14),
-    DataAcesso DATETIME DEFAULT CURRENT_TIMESTAMP,
+    DataAcesso TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- TIMESTAMP substitui DATETIME
     PRIMARY KEY (IDEstoque, CPF_Funcionario),
     FOREIGN KEY (IDEstoque) REFERENCES Estoque(IDEstoque),
     FOREIGN KEY (CPF_Funcionario) REFERENCES Funcionario(CPF)
