@@ -25,12 +25,11 @@ public class TelaNotificacoesController{
     @FXML
     public void initialize() { // funcaozinha que simula a tela de notificaçoes,
     						   // atualmente so envia que nao tem not
-        
+        ArrayList<Pane> notificacoes = NotificacoesController.gerarNotificacoes();
         if (!NotificacoesController.temNotificacoes()) {
             labelAviso.setText("Não há notificações novas");
         } else {
             paneNotificacoes.setAlignment(javafx.geometry.Pos.TOP_CENTER);
-            ArrayList<Pane> notificacoes = NotificacoesController.gerarNotificacoes();
             for(Pane p: notificacoes){
                 paneNotificacoes.getChildren().add(p);
             }

@@ -22,7 +22,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
@@ -46,8 +45,8 @@ public class TelaInicialController {
         configurarTabela();
         carregarDadosDoBanco();
         configurarFiltroPesquisa();
-        
-        if (circleAtencao != null) circleAtencao.setVisible(false);
+        controller.NotificacoesController.gerarNotificacoes();
+        circleAtencao.setVisible(controller.NotificacoesController.temNotificacoes());
     }
 
     private void configurarTabela() {
@@ -105,6 +104,8 @@ public class TelaInicialController {
                 mostrarAlerta("Sucesso", "Medicamento e lotes excluídos com sucesso.");
 
                 carregarDadosDoBanco();
+                controller.NotificacoesController.gerarNotificacoes();
+                circleAtencao.setVisible(controller.NotificacoesController.temNotificacoes());
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -178,50 +179,6 @@ public class TelaInicialController {
             e.printStackTrace();
             mostrarAlerta("Erro", "Não foi possível abrir a tela de lotes.");
         }
-    }
-
-    private void acaoRetirarEstoque(Medicamento med) {
-        TextInputDialog dialog = new TextInputDialog("1");
-        dialog.setTitle("Retirada de Estoque");
-        dialog.setHeaderText("Retirar itens de: " + med.getNome());
-        dialog.setContentText("Quantidade a remover:");
-
-        Optional<String> result = dialog.showAndWait();
-        
-        result.ifPresent(quantidadeString -> {
-            try {
-                int qtdRetirar = Integer.parseInt(quantidadeString);
-                
-                if (qtdRetirar <= 0) {
-                    mostrarAlerta("Erro", "Digite um número maior que zero.");
-                    return;
-                }
-                
-                if (qtdRetirar > med.getQuantidadePorCartela()) {
-                    mostrarAlerta("Erro", "Estoque insuficiente! Atual: " + med.getQuantidadePorCartela());
-                    return;
-                }
-
-                int novaQtd = med.getQuantidadePorCartela() - qtdRetirar;
-                MedicamentoDAOJdbc dao = new MedicamentoDAOJdbc();
-
-                if (novaQtd == 0) {
-                    dao.remover(med.getCodigoDeBarras());
-                    mostrarAlerta("Sucesso", "Estoque zerado. Medicamento removido.");
-                } else {
-                    dao.atualizarQuantidade(med.getCodigoDeBarras(), novaQtd);
-                    mostrarAlerta("Sucesso", "Retirados " + qtdRetirar + " itens.");
-                }
-
-                carregarDadosDoBanco();
-
-            } catch (NumberFormatException e) {
-                mostrarAlerta("Erro", "Digite apenas números inteiros.");
-            } catch (Exception e) {
-                mostrarAlerta("Erro Crítico", e.getMessage());
-                e.printStackTrace();
-            }
-        });
     }
     
     private void mostrarAlerta(String titulo, String msg) {

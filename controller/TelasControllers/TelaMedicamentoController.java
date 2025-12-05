@@ -98,6 +98,7 @@ void acaoVerLotes(ActionEvent event) {
     }
     
     // Define os textos básicos
+    labelTitulo.setText("MEDICAMENTO: " + medReal.getNome().toUpperCase());
     labelNome.setText(medReal.getNome());
     labelCodigoBarras.setText(Integer.toString(medReal.getCodigoDeBarras()));
     labelComposicao.setText(medReal.getComposicao());

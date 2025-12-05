@@ -35,6 +35,7 @@ public class NotificacoesController {
   public static boolean temNotificacoes() {
     return temNotificacoes;
   }
+
   public static ArrayList<Pane> gerarNotificacoes(){
     ArrayList<Pane> panesNotificacoes = new ArrayList<>();
     ArrayList<Lote> lotesVermelhos = carregarLotesVencidosDoBanco();//null;//acesso.getVencidos(); criar isso aqui no farmaciaService
@@ -52,6 +53,8 @@ public class NotificacoesController {
     }
     if(panesNotificacoes.size()>0)
       temNotificacoes = true;
+    else
+      temNotificacoes = false;
     return panesNotificacoes;
   }
 

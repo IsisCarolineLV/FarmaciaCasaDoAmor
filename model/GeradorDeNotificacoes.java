@@ -54,7 +54,7 @@ public class GeradorDeNotificacoes {
         label.setFont(Font.font("System", javafx.scene.text.FontWeight.BOLD, 14));
 
         // Eventos
-        rect.setOnMouseClicked(GeradorDeNotificacoes::verLote);
+        //rect.setOnMouseClicked(GeradorDeNotificacoes::verLote);
         rect.setOnMouseEntered(criarMudaCor(ehVermelha));
         rect.setOnMouseExited(criarVoltaCorOriginal(ehVermelha));
         if(ehVermelha){
@@ -69,10 +69,10 @@ public class GeradorDeNotificacoes {
     }
 
     // Eventos simulados
-    private static void verLote(MouseEvent event) {
+    //private static void verLote(MouseEvent event) {
         //aqui deve chamar a tela do lote/medicamento correspondente
-        System.out.println("Retângulo clicado!");
-    }
+        //System.out.println("Retângulo clicado!");
+    //}
 
     private static EventHandler<MouseEvent> criarMudaCor(boolean ehVermelha) {
     return event -> {
