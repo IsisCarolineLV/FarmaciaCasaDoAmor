@@ -3,8 +3,11 @@ package controller.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.Funcionario;
+import model.Historico;
 
 public class HistoricoDAOjdbc implements HistoricoDAO {
 
@@ -27,26 +30,58 @@ public class HistoricoDAOjdbc implements HistoricoDAO {
         }
     }
 
-    public Funcionario buscarUltimoFuncionario() {
-    String sql = "SELECT CPF_Funcionario, Nome FROM Historico ORDER BY IDHistorico DESC LIMIT 1";
+    @Override // Garante que a assinatura está sendo verificada
+    public List<Historico> buscarTodos() throws Exception { // Assinatura corrigida
+        List<Historico> historicos = new ArrayList<>();
 
-    try (Connection con = connectionFactory.getConnection();
-         PreparedStatement stmt = con.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery()) {
+        // Query com JOIN para obter o Nome do Funcionario e ordenar do mais recente ao mais antigo
+        String sql = "SELECT h.IDHistorico, h.CPF_Funcionario, f.Nome, h.Acao, h.DataDia, h.DataHora " +
+                     "FROM Historico h " +
+                     "JOIN Funcionario f ON h.CPF_Funcionario = f.CPF " +
+                     "ORDER BY h.IDHistorico DESC";
 
-        if (rs.next()) {
-            String cpf = rs.getString("CPF_Funcionario");
-            String nome = rs.getString("Nome");
+        try (Connection con = connectionFactory.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
-            // Cria o objeto e seta os campos explicitamente (seguro independentemente do construtor)
-            Funcionario f = new Funcionario(nome, cpf);
+            while (rs.next()) {
+                Historico h = new Historico(
+                    rs.getInt("IDHistorico"),
+                    rs.getString("CPF_Funcionario"),
+                    rs.getString("Nome"), // Nome do Funcionario
+                    rs.getString("Acao"),
+                    rs.getDate("DataDia"),
+                    rs.getTime("DataHora")
+                );
+                historicos.add(h);
+            }
+        } 
 
-            return f;
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-        // opcional: lançar runtime exception ou tratar de outra forma
+        return historicos;
     }
-    return null;
-}
+
+public Funcionario buscarUltimoFuncionario() {
+        String sql = "SELECT h.CPF_Funcionario, f.Nome " + 
+                     "FROM Historico h " +
+                     "JOIN Funcionario f ON h.CPF_Funcionario = f.CPF " +
+                     "ORDER BY h.IDHistorico DESC " + 
+                     "LIMIT 1";
+
+        try (Connection con = connectionFactory.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                String cpf = rs.getString("CPF_Funcionario");
+                String nome = rs.getString("Nome"); 
+
+                Funcionario f = new Funcionario(nome, cpf);
+
+                return f;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

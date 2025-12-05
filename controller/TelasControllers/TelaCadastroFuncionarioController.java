@@ -50,7 +50,10 @@ public class TelaCadastroFuncionarioController {
           boolean sucesso = service.cadastrarFuncionario(campoNomeFuncionario.getText(),campoCPF.getText());
           if(sucesso){
             System.out.println("Novo funcionario salvo no Banco de Dados");
-            acaoCancelar(event);
+            novoNome = campoNomeFuncionario.getText();
+            novoCPF = campoCPF.getText();
+            setFuncionarioResponsavel();
+            navegar(event, "/view/TelaFuncionario.fxml");
           } else{
             System.out.println("Erro ao salvar");
           }
@@ -58,14 +61,40 @@ public class TelaCadastroFuncionarioController {
           e.printStackTrace();
         }
     }
+    
+    public void setFuncionarioResponsavel() {
+       try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/TelaFuncionario.fxml"));
+        Parent root = loader.load(); // <-- IMPORTANTE!
+        TelaFuncionarioController telaFuncionarioController = loader.getController();
+        telaFuncionarioController.setDadosFuncionario(new Funcionario(novoNome, novoCPF));
+       } catch (Exception e) {
+            e.printStackTrace();
+        }
+      controller.NotificacoesController.setFuncionarioResponsavel(
+          new Funcionario(novoNome, novoCPF)
+      );
+    }
 
     private void navegar(javafx.event.Event event, String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root, 900, 600));
-            stage.show();
+            boolean fullscreen = stage.isFullScreen();
+            boolean maximizado = stage.isMaximized();
+            double largura = stage.getWidth();
+            double altura = stage.getHeight();
+
+            stage.setScene(new Scene(root));
+
+            if (maximizado || fullscreen){
+                stage.setFullScreen(fullscreen);
+                stage.setMaximized(maximizado);
+            }else{
+              stage.setWidth(largura);
+              stage.setHeight(altura);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

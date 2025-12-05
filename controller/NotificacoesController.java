@@ -21,8 +21,12 @@ public class NotificacoesController {
     funcionarioResponsavel = historicoDAOjdbc.buscarUltimoFuncionario();
   }
 
-  public static Funcionario getFuncionarioPadrao() {
+  public static Funcionario getFuncionarioResponsavel() {
     return funcionarioResponsavel;
+  }
+
+  public static void setFuncionarioResponsavel(Funcionario f) {
+    funcionarioResponsavel = f;
   }
 
   public static boolean temNotificacoes() {

@@ -10,7 +10,6 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -72,7 +71,12 @@ public class TelaInicialController {
                 if (row.getItem() != null) acaoExcluirCompleto(row.getItem());
             });
 
-            contextMenu.getItems().addAll(itemVerLotes, itemExcluir);
+            MenuItem itemDados = new MenuItem("Ver Dados");
+            itemDados.setOnAction(event -> {
+                if (row.getItem() != null) abrirTelaMedicamento(row.getItem());
+            });
+
+            contextMenu.getItems().addAll(itemVerLotes, itemDados, itemExcluir);
 
             row.contextMenuProperty().bind(
                 Bindings.when(row.emptyProperty())
@@ -118,6 +122,39 @@ public class TelaInicialController {
             // Passa o medicamento para o controller da nova tela
             TelaLotesController controller = loader.getController();
             controller.setMedicamento(med);
+            
+            Stage stage = (Stage) tabelaMedicamentos.getScene().getWindow();
+            stage.setTitle("Gerenciamento de Lotes - " + med.getNome());
+            boolean fullscreen = stage.isFullScreen();
+            boolean maximizado = stage.isMaximized();
+            double largura = stage.getWidth();
+            double altura = stage.getHeight();
+
+            stage.setScene(new Scene(root));
+
+            if (maximizado || fullscreen){
+                stage.setFullScreen(fullscreen);
+                stage.setMaximized(maximizado);
+            }else{
+              stage.setWidth(largura);
+              stage.setHeight(altura);
+            }
+
+            //stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Erro", "Não foi possível abrir a tela de lotes.");
+        }
+    }
+
+    private void abrirTelaMedicamento(Medicamento med) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/TelaMedicamento.fxml"));
+            Parent root = loader.load();
+            
+            // Passa o medicamento para o controller da nova tela
+            TelaMedicamentoController controller = loader.getController();
+            controller.setDadosMedicamento(med);
             
             Stage stage = (Stage) tabelaMedicamentos.getScene().getWindow();
             stage.setTitle("Gerenciamento de Lotes - " + med.getNome());
@@ -231,7 +268,7 @@ public class TelaInicialController {
     @FXML void irParaFuncionario(MouseEvent event) {navegar(event, "/view/TelaFuncionario.fxml"); }
 
     @FXML void irParaHistorico(ActionEvent event) {
-        //if(ControllerTelas.getAcesso() != null) System.out.println(ControllerTelas.getAcesso().imprimirHistorico());
+        navegar(event, "/view/TelaHistorico.fxml");
     }
     
     private void navegar(javafx.event.Event event, String fxmlPath) {

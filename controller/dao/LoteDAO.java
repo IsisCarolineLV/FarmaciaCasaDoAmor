@@ -12,4 +12,5 @@ public interface LoteDAO {
     ArrayList<Lote> listarVencidos() throws Exception;
     void excluir(int idLote) throws Exception;
     void atualizarQuantidade(Lote lote) throws Exception;
+    int buscarQuantidadeTotalPorMedicamento(int idMedicamento) throws Exception;
 }
