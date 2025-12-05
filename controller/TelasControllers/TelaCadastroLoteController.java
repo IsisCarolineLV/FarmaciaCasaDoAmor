@@ -50,7 +50,7 @@ public class TelaCadastroLoteController{
             //Passa o NOME para o serviço buscar o ID sozinho
             boolean sucesso = service.cadastrarLote(
                 nomeMedicamento,
-                dataValidade,
+                quantidade, dataValidade,
                 quantidade,
                 funcionario
             );

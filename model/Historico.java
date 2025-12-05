@@ -3,17 +3,17 @@ package model;
 import java.util.ArrayList;
 
 public class Historico {
-  ArrayList<Acesso> acessos;
+  ArrayList<Acao> acessos;
 
   public Historico() {
     acessos = new ArrayList<>();
   }
 
-  public ArrayList<Acesso> getAcessos() {
+  public ArrayList<Acao> getAcessos() {
     return acessos;
   }
 
-  public void adicionarAcesso(Acesso novoAcesso) {
+  public void adicionarAcesso(Acao novoAcesso) {
     acessos.add(novoAcesso);
   }
 
@@ -23,7 +23,7 @@ public class Historico {
 
   public String toString() {
     String resultado = "Historico de Acessos:\n";
-    for (Acesso a : acessos) {
+    for (Acao a : acessos) {
       resultado += a.toString() + "\n";
     }
     return resultado;
