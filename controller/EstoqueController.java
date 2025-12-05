@@ -12,6 +12,7 @@ import controller.dao.MedicamentoDAOJdbc;
 import model.Funcionario;
 import model.Lote;
 import model.Medicamento;
+import controller.dao.HistoricoDAOjdbc;
 
 public class EstoqueController {
 
@@ -23,6 +24,7 @@ public class EstoqueController {
         // Instancia as implementações JDBC
         this.medicamentoDAO = new MedicamentoDAOJdbc();
         this.loteDAO = new LoteDAOJdbc();
+        this.historicoDAO = new HistoricoDAOjdbc();
     }
 
     public boolean cadastrarMedicamento(String nome, int qtd, String comp, int cod, Funcionario f) {

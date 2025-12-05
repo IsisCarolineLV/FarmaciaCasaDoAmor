@@ -13,7 +13,6 @@ import javafx.scene.Node;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.sql.Date;
-import java.time.LocalDate;
 
 import controller.NotificacoesController;
 import controller.EstoqueController;

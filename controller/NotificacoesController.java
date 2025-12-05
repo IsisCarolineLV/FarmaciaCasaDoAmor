@@ -8,7 +8,7 @@ import model.Lote;
 import controller.dao.*;
 
 public class NotificacoesController {
-  private static final Funcionario funcionarioPadrao = new Funcionario("admin", "123.456.789-00");
+  private static Funcionario funcionarioResponsavel = new Funcionario("admin", "123.456.789-00");
   private static boolean temNotificacoes = false;
   //private ObservableList<Lote> masterData = FXCollections.observableArrayList();
   private static GeradorDeNotificacoes geradorDeNotificacoesVermelhas = new GeradorDeNotificacoes(true);
@@ -16,11 +16,13 @@ public class NotificacoesController {
 
   static {
     //acesso.adicionarFuncionario(funcionarioPadrao); adicionar funcionario padrao no bd so uma vez
+    HistoricoDAOjdbc historicoDAOjdbc = new HistoricoDAOjdbc();
     gerarNotificacoes();
+    funcionarioResponsavel = historicoDAOjdbc.buscarUltimoFuncionario();
   }
 
   public static Funcionario getFuncionarioPadrao() {
-    return funcionarioPadrao;
+    return funcionarioResponsavel;
   }
 
   public static boolean temNotificacoes() {
