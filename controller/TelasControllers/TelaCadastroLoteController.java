@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Funcionario;
+import model.Medicamento;
 import javafx.scene.Node;
 import javafx.event.ActionEvent;
 import java.io.IOException;
@@ -30,42 +31,48 @@ public class TelaCadastroLoteController{
     public void acaoSalvar(ActionEvent event) {
         String textoQtd = campoQuantidade.getText();
         if (!textoQtd.matches("\\d+")) {
-            
             labelErroQtd.setVisible(true);
             labelErroQtd.setText("A quantidade deve conter apenas números!");
-            
             return; 
         }
 
         labelErroQtd.setVisible(false);
-        
+
         try {
             String nomeMedicamento = campoNomeMedicamento.getText();
-            int quantidade = Integer.parseInt(textoQtd);
+            int qtdCaixas = Integer.parseInt(textoQtd); 
             Date dataValidade = Date.valueOf(campoValidade.getValue());
 
             Funcionario funcionario = NotificacoesController.getFuncionarioPadrao();
 
-            //Passa o NOME para o serviço buscar o ID sozinho
-            boolean sucesso = service.cadastrarLote(
-                nomeMedicamento,
-                quantidade, dataValidade,
-                quantidade,
-                funcionario
-            );
+            Medicamento medExistente = service.buscarPorNome(nomeMedicamento); 
 
-            if (sucesso) {
-                System.out.println("Lote cadastrado com sucesso!");
-                acaoCancelar(event);
+            if (medExistente != null) {
+                // Se existe, calculamos o TOTAL real
+                int totalComprimidos = qtdCaixas * medExistente.getQuantidadePorCartela();
+
+                // Salva o TOTAL (200) e não as caixas (20)
+                boolean sucesso = service.cadastrarLote(
+                    nomeMedicamento,
+                    dataValidade,
+                    totalComprimidos, 
+                    funcionario
+                );
+
+                if (sucesso) {
+                    System.out.println("Lote cadastrado! Total un: " + totalComprimidos);
+                    acaoCancelar(event);
+                }
             } else {
-                System.out.println("Medicamento não encontrado. Redirecionando para cadastro...");
-                chamaTelaMedicamento(nomeMedicamento, dataValidade, quantidade);
+                // Se não existe, redireciona para criar o medicamento
+                System.out.println("Medicamento não encontrado. Redirecionando...");
+                // Passamos 'qtdCaixas' para a próxima tela fazer a conta lá
+                chamaTelaMedicamento(nomeMedicamento, dataValidade, qtdCaixas);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
     }
 
     @FXML
@@ -94,31 +101,4 @@ public class TelaCadastroLoteController{
         }
     }
 
-    /*public void tentarInserirLoteDeNovo(){
-        String textoQtd = campoQuantidade.getText();
-        labelErroQtd.setVisible(false);
-        LocalDate localDate = campoValidade.getValue();
-        //System.out.println("Salvando Lote...");
-        //System.out.println("Medicamento: " + campoNomeMedicamento.getText());
-        
-        int quantidade = Integer.parseInt(textoQtd); 
-        //System.out.println("Qtd (Int): " + quantidade);
-        
-        //System.out.println("Validade: " + campoValidade.getValue());
-
-        //adiciona o lote (precisamos fazer a logica de verificar se o funcionario tem acesso a isso)
-        try {
-            boolean sucesso = ControllerTelas.getAcesso().adicionarLoteEstoque(ControllerTelas.getFuncionarioPadrao() ,
-            campoNomeMedicamento.getText(), Date.valueOf(localDate), quantidade);
-            if(!sucesso){
-                System.out.println("Medicamento nao cadastrado, cadastre primeiro");
-                chamaTelaMedicamento(campoNomeMedicamento.getText(), Date.valueOf(localDate), quantidade);
-            }else{
-                System.out.println("Lote adicionado com sucesso!");
-                acaoCancelar(new ActionEvent());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 }

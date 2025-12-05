@@ -148,4 +148,30 @@ public class LoteDAOJdbc implements LoteDAO {
         return lotesQuaseVencidos;
     }
 
+    public void atualizarQuantidade(Lote lote) throws Exception {
+        String sql = "UPDATE Lote SET QuantidadeComprimidos = ? WHERE IDLote = ?";
+
+        try (Connection con = connectionFactory.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setInt(1, lote.getQuantidadeComprimidos());
+            stmt.setInt(2, lote.getIdLote());
+
+            stmt.executeUpdate();
+        }
+    }
+
+
+    public void excluir(int idLote) throws Exception {
+        String sql = "DELETE FROM Lote WHERE IDLote = ?";
+
+        try (Connection con = connectionFactory.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setInt(1, idLote);
+
+            stmt.executeUpdate();
+        }
+    }
+
 }

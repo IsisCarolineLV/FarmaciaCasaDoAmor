@@ -39,7 +39,7 @@ public class EstoqueController {
         }
     }
 
-    public boolean cadastrarLote(String nomeMed, int codigoBarras, Date validade, int qtd, Funcionario f) {
+    public boolean cadastrarLote(String nomeMed, Date validade, int qtd, Funcionario f) {
         try {
             Medicamento med = medicamentoDAO.buscarPorNome(nomeMed);
 
@@ -83,6 +83,43 @@ public class EstoqueController {
         } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
+        }
+    }
+
+    public String consumirDoLote(Lote lote, int qtdParaConsumir) {
+        if (lote == null) return "Lote inválido.";
+
+        if (qtdParaConsumir <= 0) {
+            return "A quantidade deve ser maior que zero.";
+        }
+
+        if (qtdParaConsumir > lote.getQuantidadeComprimidos()) {
+            return "Quantidade insuficiente (Disponível: " + lote.getQuantidadeComprimidos() + ").";
+        }
+
+        try {
+            // Atualiza memória
+            int novaQtd = lote.getQuantidadeComprimidos() - qtdParaConsumir;
+            lote.setQuantidadeComprimidos(novaQtd);
+
+            // Atualiza banco (Agora funciona pois adicionamos na Interface LoteDAO)
+            loteDAO.atualizarQuantidade(lote); 
+
+            return null; // Sucesso
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Erro ao atualizar: " + e.getMessage();
+        }
+    }
+
+
+    public Medicamento buscarPorNome(String nome) {
+        try {
+            // Repassa a chamada para o DAO
+            return medicamentoDAO.buscarPorNome(nome);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
