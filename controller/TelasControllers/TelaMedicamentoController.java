@@ -38,10 +38,6 @@ public class TelaMedicamentoController {
   private EstoqueController service = new EstoqueController();
   private Medicamento med;
 
-  @FXML
-  void acaoEditar(ActionEvent event) {
-    //chama tela edicao medicamento
-  }
 
   @FXML
 void acaoVerLotes(ActionEvent event) {

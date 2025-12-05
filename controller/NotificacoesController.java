@@ -5,7 +5,7 @@ import javafx.scene.layout.Pane;
 import model.Funcionario;
 import model.GeradorDeNotificacoes;
 import model.Lote;
-import controller.dao.*;
+import model.dao.*;
 
 public class NotificacoesController {
   private static Funcionario funcionarioResponsavel = new Funcionario("admin", "123.456.789-00");

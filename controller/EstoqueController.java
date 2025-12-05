@@ -4,16 +4,16 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.dao.HistoricoDAO;
-import controller.dao.LoteDAO;
-import controller.dao.LoteDAOJdbc;
-import controller.dao.MedicamentoDAO;
-import controller.dao.MedicamentoDAOJdbc;
 import model.Funcionario;
 import model.Historico;
 import model.Lote;
 import model.Medicamento;
-import controller.dao.HistoricoDAOjdbc;
+import model.dao.HistoricoDAO;
+import model.dao.HistoricoDAOjdbc;
+import model.dao.LoteDAO;
+import model.dao.LoteDAOJdbc;
+import model.dao.MedicamentoDAO;
+import model.dao.MedicamentoDAOJdbc;
 
 public class EstoqueController {
 

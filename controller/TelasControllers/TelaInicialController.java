@@ -3,7 +3,6 @@ package controller.TelasControllers;
 import java.util.List;
 import java.util.Optional;
 
-import controller.dao.MedicamentoDAOJdbc;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,6 +26,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import model.Medicamento;
+import model.dao.MedicamentoDAOJdbc;
 
 public class TelaInicialController {
 

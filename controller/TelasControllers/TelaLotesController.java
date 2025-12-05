@@ -5,8 +5,7 @@ import java.sql.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import controller.EstoqueController; 
-import controller.dao.LoteDAOJdbc;
+import controller.EstoqueController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -33,6 +32,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Lote;
 import model.Medicamento;
+import model.dao.LoteDAOJdbc;
 
 public class TelaLotesController implements Initializable {
 
