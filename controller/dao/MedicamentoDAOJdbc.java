@@ -147,4 +147,30 @@ public class MedicamentoDAOJdbc implements MedicamentoDAO {
             } 
         }
     }
+
+    @Override
+    public Medicamento buscarPorID(int id) throws Exception {
+    String sql = "SELECT IDRemedio, Nome, Composicao, QuantidadeRemedio "
+               + "FROM Medicamento "
+               + "WHERE IDRemedio = ?";
+
+    try (Connection con = connectionFactory.getConnection();
+         PreparedStatement stmt = con.prepareStatement(sql)) {
+
+        stmt.setInt(1, id);
+
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                int idRemedio = (rs.getInt("IDRemedio"));
+                String nome = (rs.getString("Nome"));
+                String composicao = (rs.getString("Composicao"));
+                int quantidade = (rs.getInt("QuantidadeRemedio"));
+                Medicamento m = new Medicamento(nome, quantidade,composicao, idRemedio);
+                return m;
+            }
+            }
+        }
+        // Se não achar, retorna null
+        return null;
+    }
 }

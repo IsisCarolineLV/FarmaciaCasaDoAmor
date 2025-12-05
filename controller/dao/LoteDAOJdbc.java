@@ -20,28 +20,28 @@ public class LoteDAOJdbc implements LoteDAO {
     @Override
     public void salvar(Lote lote) throws Exception {
         String sql = "INSERT INTO Lote (Validade, QuantidadeComprimidos, IDRemedio, IDEstoque) VALUES (?, ?, ?, 1)";
-        
+
         try (Connection con = connectionFactory.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql)) {
-            
+                PreparedStatement stmt = con.prepareStatement(sql)) {
+
             stmt.setDate(1, lote.getValidade());
             stmt.setInt(2, lote.getQuantidadeComprimidos());
             stmt.setInt(3, lote.getMedicamento().getCodigoDeBarras());
-            
+
             stmt.execute();
         }
     }
-    
-    public List<Lote> listarTodos() throws Exception {
-        String sql = "SELECT L.IDLote, L.Validade, L.QuantidadeComprimidos, L.IDRemedio, M.Nome " +
-                     "FROM Lote L " +
-                     "INNER JOIN Medicamento M ON L.IDRemedio = M.IDRemedio";
 
-        List<Lote> lotes = new ArrayList<>();
+    public ArrayList<Lote> listarTodos() throws Exception {
+        String sql = "SELECT L.IDLote, L.Validade, L.QuantidadeComprimidos, L.IDRemedio, M.Nome " +
+                "FROM Lote L " +
+                "INNER JOIN Medicamento M ON L.IDRemedio = M.IDRemedio";
+
+        ArrayList<Lote> lotes = new ArrayList<>();
 
         try (Connection con = connectionFactory.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+                PreparedStatement stmt = con.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Medicamento med = new Medicamento();
@@ -49,12 +49,11 @@ public class LoteDAOJdbc implements LoteDAO {
                 med.setNome(rs.getString("Nome"));
 
                 Lote l = new Lote(
-                    rs.getInt("QuantidadeComprimidos"),
-                    rs.getDate("Validade"),
-                    med
-                );
+                        rs.getInt("QuantidadeComprimidos"),
+                        rs.getDate("Validade"),
+                        med);
                 l.setIdLote(rs.getInt("IDLote"));
-                
+
                 lotes.add(l);
             }
         }
@@ -62,32 +61,92 @@ public class LoteDAOJdbc implements LoteDAO {
     }
 
     @Override
-    public List<Lote> listarPorMedicamento(int codigoBarras) throws Exception {
+    public ArrayList<Lote> listarPorMedicamento(int codigoBarras) throws Exception {
         String sql = "SELECT * FROM Lote WHERE IDRemedio = ?";
-        List<Lote> lotes = new ArrayList<>();
-        
+        ArrayList<Lote> lotes = new ArrayList<>();
+
         MedicamentoDAO medDao = new MedicamentoDAOJdbc();
         Medicamento med = medDao.buscarPorCodigoBarras(codigoBarras);
 
-        if (med == null) return lotes;
+        if (med == null)
+            return lotes;
 
         try (Connection con = connectionFactory.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql)) {
-            
+                PreparedStatement stmt = con.prepareStatement(sql)) {
+
             stmt.setInt(1, codigoBarras);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 Lote l = new Lote(
-                    rs.getInt("QuantidadeComprimidos"),
-                    rs.getDate("Validade"),
-                    med
-                );
+                        rs.getInt("QuantidadeComprimidos"),
+                        rs.getDate("Validade"),
+                        med);
                 l.setIdLote(rs.getInt("IDLote"));
                 lotes.add(l);
             }
         }
         return lotes;
     }
-    
+
+    @Override
+    public ArrayList<Lote> listarVencidos() throws Exception {
+        String sql =
+            "select IDLote, QuantidadeComprimidos, Validade, IDRemedio, " +
+            "       current_date - Validade as dias_vencidos " +
+            "from Lote " +
+            "where Validade < current_date";
+
+        ArrayList<Lote> lotesVencidos = new ArrayList<>();
+       MedicamentoDAO medicamentoDAO = new MedicamentoDAOJdbc();
+
+        try (Connection con = connectionFactory.getConnection();
+            PreparedStatement stmt = con.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Medicamento med = medicamentoDAO.buscarPorID(rs.getInt("IDRemedio"));
+
+                Lote l = new Lote(
+                    rs.getInt("QuantidadeComprimidos"),
+                    rs.getDate("Validade"),
+                    med
+                );
+                l.setIdLote(rs.getInt("IDLote"));
+                lotesVencidos.add(l);
+            }
+        }
+        return lotesVencidos;
+    }
+
+    @Override
+    public ArrayList<Lote> listarQuaseVencidos() throws Exception {
+        String sql =
+            "select IDLote, QuantidadeComprimidos, Validade, IDRemedio, " +
+            "       current_date - Validade as dias_vencidos " +
+            "from Lote " +
+            "WHERE Validade BETWEEN CURRENT_DATE AND (CURRENT_DATE + INTERVAL '15 days');";
+
+        ArrayList<Lote> lotesQuaseVencidos = new ArrayList<>();
+       MedicamentoDAO medicamentoDAO = new MedicamentoDAOJdbc();
+
+        try (Connection con = connectionFactory.getConnection();
+            PreparedStatement stmt = con.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Medicamento med = medicamentoDAO.buscarPorID(rs.getInt("IDRemedio"));
+
+                Lote l = new Lote(
+                    rs.getInt("QuantidadeComprimidos"),
+                    rs.getDate("Validade"),
+                    med
+                );
+                l.setIdLote(rs.getInt("IDLote"));
+                lotesQuaseVencidos.add(l);
+            }
+        }
+        return lotesQuaseVencidos;
+    }
+
 }
