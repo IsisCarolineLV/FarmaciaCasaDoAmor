@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelasControllers.TelaCadastroFuncionarioController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelasControllers.TelaCadastroFuncionarioController">
    
    <left>
       <VBox prefWidth="200.0" style="-fx-background-color: #5F8696; -fx-background-radius: 0 30 30 0;" BorderPane.alignment="CENTER" />
@@ -42,8 +42,7 @@
                         <TextField fx:id="campoNomeFuncionario" prefHeight="45.0" promptText="Nome do Funcionario" style="-fx-background-color: #D3D3D3; -fx-background-radius: 20; -fx-padding: 0 20;" />
                         
                         <TextField fx:id="campoCPF" prefHeight="45.0" promptText="CPF" style="-fx-background-color: #D3D3D3; -fx-background-radius: 20; -fx-padding: 0 20;" />
-                        
-                        <Label fx:id="labelErroQtd" text="Permitido apenas números!" textFill="RED" visible="false" />
+                        <Label fx:id="labelErro" text="Funcionário já cadastrado!" textFill="RED" visible="false" />
 
                         <HBox alignment="CENTER" spacing="50.0">
                            <children>

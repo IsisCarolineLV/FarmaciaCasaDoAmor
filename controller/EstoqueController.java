@@ -56,6 +56,25 @@ public class EstoqueController {
         }
     }
 
+    public boolean cadastrarFuncionario(String nomeMed, Date validade, int qtd, Funcionario f){
+        try {
+            Medicamento med = medicamentoDAO.buscarPorNome(nomeMed);
+
+            if (med == null) {
+                System.out.println("Medicamento" + nomeMed + "não encontrado.");
+                return false;
+            }
+            
+            Lote lote = new Lote(qtd, validade, med);
+            loteDAO.salvar(lote);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public List<Medicamento> buscarMedicamentos(String termo) {
         try {
             return medicamentoDAO.buscarPorNomeSemelhante(termo);

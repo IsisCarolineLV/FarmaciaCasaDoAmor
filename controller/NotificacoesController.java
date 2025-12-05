@@ -8,7 +8,7 @@ import model.Lote;
 import controller.dao.*;
 
 public class NotificacoesController {
-  private static final Funcionario funcionarioPadrao = new Funcionario("admin", 123456789);
+  private static final Funcionario funcionarioPadrao = new Funcionario("admin", "123.456.789-00");
   private static boolean temNotificacoes = false;
   //private ObservableList<Lote> masterData = FXCollections.observableArrayList();
   private static GeradorDeNotificacoes geradorDeNotificacoesVermelhas = new GeradorDeNotificacoes(true);
