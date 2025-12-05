@@ -1,10 +1,7 @@
--- 1. Derruba o banco se ele já existir
-DROP DATABASE IF EXISTS "Farmacia";
-
--- 2. Cria o banco de dados
+-- Cria o banco de dados
 CREATE DATABASE "Farmacia";
 
--- 3. Conecta no banco recém-criado (Substituto do 'USE Farmacia;')
+-- Conecta no banco recém-criado (Substituto do 'USE Farmacia;')
 \c "Farmacia";
 
 CREATE TABLE Funcionario (

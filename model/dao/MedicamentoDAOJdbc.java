@@ -1,4 +1,4 @@
-package controller.dao;
+package model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -56,7 +56,7 @@ public class MedicamentoDAOJdbc implements MedicamentoDAO {
     
     @Override
     public Medicamento buscarPorNome(String nome) throws Exception{
-        String sql = "SELECT * FROM Medicamento WHERE Nome = ?";
+        String sql = "SELECT * FROM Medicamento WHERE UPPER(Nome) = ?";
 
         try(Connection con = connectionFactory.getConnection(); 
             PreparedStatement stmt = con.prepareStatement(sql)){
@@ -93,7 +93,7 @@ public class MedicamentoDAOJdbc implements MedicamentoDAO {
                 Medicamento med = new Medicamento(
                     rs.getString("Nome"),
                     rs.getInt("QuantidadeRemedio"), 
-                    "", 
+                    rs.getString("Composicao"), 
                     rs.getInt("IDRemedio")
                 );
 
@@ -106,21 +106,25 @@ public class MedicamentoDAOJdbc implements MedicamentoDAO {
     }
 
     @Override
-    public List<Medicamento> buscarPorNomeSemelhante(String termo) throws Exception {
-        String sql = "SELECT * FROM Medicamento WHERE Nome LIKE ?";
-        List<Medicamento> lista = new ArrayList<>();
-        
+public List<Medicamento> buscarPorNomeSemelhante(String termo) throws Exception {
+    // Adiciona UPPER() na coluna do banco
+    String sql = "SELECT * FROM Medicamento WHERE UPPER(Nome) LIKE ?"; 
+    
+    List<Medicamento> lista = new ArrayList<>();
+    
         try (Connection con = connectionFactory.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql)) {
+            PreparedStatement stmt = con.prepareStatement(sql)) {
             
+            // O termo já vem em maiúsculo do controller, mas mantemos o % aqui
             stmt.setString(1, "%" + termo + "%"); 
+            
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 lista.add(new Medicamento(
                     rs.getString("Nome"),
                     rs.getInt("QuantidadeRemedio"),
-                    "", 
+                    rs.getString("Composicao"), // <--- APROVEITEI E CORRIGI ISSO (estava "")
                     rs.getInt("IDRemedio")
                 ));
             }

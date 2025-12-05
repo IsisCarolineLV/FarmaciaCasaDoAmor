@@ -1,8 +1,8 @@
 package controller;
 
-import controller.dao.FuncionarioDAO;
-import controller.dao.FuncionarioDAOJdbc; 
-import model.Funcionario; 
+import model.Funcionario;
+import model.dao.FuncionarioDAO;
+import model.dao.FuncionarioDAOJdbc; 
 
 public class FuncionarioController {
 
@@ -14,7 +14,7 @@ public class FuncionarioController {
 
 
     public boolean cadastrarFuncionario(String nome, String cpf) throws Exception {
-        Funcionario novoFuncionario = new Funcionario(nome, cpf); 
+        Funcionario novoFuncionario = new Funcionario(nome.toUpperCase(), cpf); 
 
         if (funcionarioJaCadastrado(cpf)) {
             return false;

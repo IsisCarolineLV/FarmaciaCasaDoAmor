@@ -4,16 +4,16 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.dao.HistoricoDAO;
-import controller.dao.LoteDAO;
-import controller.dao.LoteDAOJdbc;
-import controller.dao.MedicamentoDAO;
-import controller.dao.MedicamentoDAOJdbc;
 import model.Funcionario;
 import model.Historico;
 import model.Lote;
 import model.Medicamento;
-import controller.dao.HistoricoDAOjdbc;
+import model.dao.HistoricoDAO;
+import model.dao.HistoricoDAOjdbc;
+import model.dao.LoteDAO;
+import model.dao.LoteDAOJdbc;
+import model.dao.MedicamentoDAO;
+import model.dao.MedicamentoDAOJdbc;
 
 public class EstoqueController {
 
@@ -30,7 +30,11 @@ public class EstoqueController {
 
     public boolean cadastrarMedicamento(String nome, int qtd, String comp, int cod, Funcionario f) {
         try {
-            Medicamento m = new Medicamento(nome, qtd, comp, cod);
+            Medicamento m = new Medicamento(nome.toUpperCase(), qtd, comp, cod);
+            if(medicamentoDAO.buscarPorCodigoBarras(cod) != null) {
+                System.out.println("Medicamento com codigo de barras " + cod + " já cadastrado.");
+                return false;
+            }
             medicamentoDAO.salvar(m);
             historicoDAO.registrarAcao(f.getCPF(), "Cadastrou medicamento "+ nome); //registra no historico a acao
             return true;
@@ -42,14 +46,23 @@ public class EstoqueController {
 
     public boolean cadastrarLote(String nomeMed, Date validade, int qtd, Funcionario f) {
         try {
-            Medicamento med = medicamentoDAO.buscarPorNome(nomeMed);
+            Medicamento med = medicamentoDAO.buscarPorNome(nomeMed.toUpperCase());
 
             if (med == null) {
                 System.out.println("Medicamento" + nomeMed + "não encontrado.");
                 return false;
             }
             
+
             Lote lote = new Lote(qtd, validade, med);
+            Lote buscarLote = loteDAO.buscarPorMedicamentoEValidade(med, validade);
+            if(buscarLote != null) {
+                System.out.println("Lote para o medicamento " + nomeMed + " com validade " + validade + " já cadastrado.");
+                buscarLote.setQuantidadeComprimidos(buscarLote.getQuantidadeComprimidos() + qtd);
+                loteDAO.atualizarQuantidade(buscarLote);
+                historicoDAO.registrarAcao(f.getCPF(), "Atualizou lote de "+ nomeMed);
+                return true;
+            }
             loteDAO.salvar(lote);
             historicoDAO.registrarAcao(f.getCPF(), "Cadastrou lote de"+ nomeMed); //registra no historico a acao
             return true;
@@ -61,7 +74,7 @@ public class EstoqueController {
 
     public boolean cadastrarFuncionario(String nomeMed, Date validade, int qtd, Funcionario f){
         try {
-            Medicamento med = medicamentoDAO.buscarPorNome(nomeMed);
+            Medicamento med = medicamentoDAO.buscarPorNome(nomeMed.toUpperCase());
 
             if (med == null) {
                 System.out.println("Medicamento" + nomeMed + "não encontrado.");
@@ -80,7 +93,7 @@ public class EstoqueController {
 
     public List<Medicamento> buscarMedicamentos(String termo) {
         try {
-            return medicamentoDAO.buscarPorNomeSemelhante(termo);
+            return medicamentoDAO.buscarPorNomeSemelhante(termo.toUpperCase());
         } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
@@ -117,7 +130,7 @@ public class EstoqueController {
     public Medicamento buscarPorNome(String nome) {
         try {
             // Repassa a chamada para o DAO
-            return medicamentoDAO.buscarPorNome(nome);
+            return medicamentoDAO.buscarPorNome(nome.toUpperCase());
         } catch (Exception e) {
             e.printStackTrace();
             return null;

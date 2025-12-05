@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelasControllers.TelaCadastroLoteController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelasControllers.TelaCadastroLoteController">
    
    <left>
       <VBox prefWidth="200.0" style="-fx-background-color: #5F8696; -fx-background-radius: 0 30 30 0;" BorderPane.alignment="CENTER" />
@@ -40,7 +40,7 @@
                      </padding>
                      <children>
                         
-                        <TextField fx:id="campoNomeMedicamento" prefHeight="45.0" promptText="Nome do Medicamento ou Código" style="-fx-background-color: #D3D3D3; -fx-background-radius: 20; -fx-padding: 0 20;" />
+                        <TextField fx:id="campoNomeMedicamento" prefHeight="45.0" promptText="Nome do Medicamento" style="-fx-background-color: #D3D3D3; -fx-background-radius: 20; -fx-padding: 0 20;" />
                         
                         <TextField fx:id="campoQuantidade" prefHeight="45.0" promptText="Quantidade de Caixas" style="-fx-background-color: #D3D3D3; -fx-background-radius: 20; -fx-padding: 0 20;" />
                         

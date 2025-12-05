@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelasControllers.TelaMedicamentoController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelasControllers.TelaMedicamentoController">
    
    <left>
       <VBox prefHeight="600.0" prefWidth="200.0" style="-fx-background-color: #5F8696; -fx-background-radius: 0 30 30 0;" BorderPane.alignment="CENTER" />
@@ -125,7 +125,6 @@
                         <HBox alignment="CENTER" spacing="50.0">
                            <children>
                               <Button mnemonicParsing="false" onAction="#acaoVerLotes" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #8DA6B0; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-weight: bold; -fx-cursor: hand;" text="Lotes" />
-                              <Button mnemonicParsing="false" onAction="#acaoEditar" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #8DA6B0; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-weight: bold; -fx-cursor: hand;" text="Editar" />
                               <Button mnemonicParsing="false" onAction="#acaoVoltar" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #8DA6B0; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-weight: bold; -fx-cursor: hand;" text="Voltar" />
                            </children>
                         </HBox>

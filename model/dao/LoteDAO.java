@@ -1,4 +1,4 @@
-package controller.dao;
+package model.dao;
 
 import java.util.ArrayList;
 
@@ -13,4 +13,5 @@ public interface LoteDAO {
     void excluir(int idLote) throws Exception;
     void atualizarQuantidade(Lote lote) throws Exception;
     int buscarQuantidadeTotalPorMedicamento(int idMedicamento) throws Exception;
+    Lote buscarPorMedicamentoEValidade(model.Medicamento med, java.sql.Date validade) throws Exception;
 }

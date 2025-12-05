@@ -5,7 +5,7 @@ import javafx.scene.layout.Pane;
 import model.Funcionario;
 import model.GeradorDeNotificacoes;
 import model.Lote;
-import controller.dao.*;
+import model.dao.*;
 
 public class NotificacoesController {
   private static Funcionario funcionarioResponsavel = new Funcionario("admin", "123.456.789-00");
@@ -19,6 +19,9 @@ public class NotificacoesController {
     HistoricoDAOjdbc historicoDAOjdbc = new HistoricoDAOjdbc();
     gerarNotificacoes();
     funcionarioResponsavel = historicoDAOjdbc.buscarUltimoFuncionario();
+    if(funcionarioResponsavel == null) {
+        funcionarioResponsavel = new Funcionario("admin", "123456789");
+    }
   }
 
   public static Funcionario getFuncionarioResponsavel() {
@@ -32,6 +35,7 @@ public class NotificacoesController {
   public static boolean temNotificacoes() {
     return temNotificacoes;
   }
+
   public static ArrayList<Pane> gerarNotificacoes(){
     ArrayList<Pane> panesNotificacoes = new ArrayList<>();
     ArrayList<Lote> lotesVermelhos = carregarLotesVencidosDoBanco();//null;//acesso.getVencidos(); criar isso aqui no farmaciaService
@@ -49,6 +53,8 @@ public class NotificacoesController {
     }
     if(panesNotificacoes.size()>0)
       temNotificacoes = true;
+    else
+      temNotificacoes = false;
     return panesNotificacoes;
   }
 

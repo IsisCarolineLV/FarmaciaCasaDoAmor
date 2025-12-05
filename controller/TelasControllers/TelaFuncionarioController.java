@@ -37,7 +37,7 @@ public class TelaFuncionarioController {
     public void setFuncionarioLogado(Funcionario funcionario) {
         this.funcionarioLogado = funcionario;
         if (funcionario != null) {
-            labelNome.setText(funcionario.getNome());
+            labelNome.setText(funcionario.getNome().toUpperCase());
             // Assumindo que seu getCPF retorna o CPF formatado ou não
             labelCPF.setText(funcionario.getCPF()); 
             
