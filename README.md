@@ -1,6 +1,6 @@
 # 🏥 Farmácia Casa do Amor
 
-Sistema de gerenciamento de estoque farmacêutico desenvolvido em Java com JavaFX e PostgreSQL. O sistema permite o controle de medicamentos, gerenciamento de lotes por validade, cadastro de funcionários e auditoria de ações.
+Sistema de gerenciamento de estoque farmacêutico desenvolvido com o objetivo de apoiar a instituição filantrópica Casa do Amor. O sistema permite o controle de medicamentos, gerenciamento de lotes por validade, cadastro de funcionários e auditoria de ações.
 
 ## 📋 Funcionalidades
 
@@ -21,11 +21,11 @@ Sistema de gerenciamento de estoque farmacêutico desenvolvido em Java com JavaF
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **Linguagem:** Java 8+
-- **Interface Gráfica:** JavaFX (FXML)
-- **Banco de Dados:** PostgreSQL
-- **Persistência:** JDBC (Padrão DAO)
-- **IDE Recomendada:** VS Code ou Eclipse
+- **Linguagem:**           Java 8+
+- **Interface Gráfica:**   JavaFX (FXML)
+- **Banco de Dados:**      PostgreSQL
+- **Persistência:**        JDBC (Padrão DAO)
+- **IDE *recomendada*:**   VS Code ou Eclipse
 
 ## 🚀 Como Executar o Projeto
 
@@ -33,14 +33,15 @@ Sistema de gerenciamento de estoque farmacêutico desenvolvido em Java com JavaF
 Certifique-se de ter instalado:
 - JDK (Java Development Kit) 1.8 ou superior.
 - PostgreSQL.
-- Driver JDBC do PostgreSQL (o arquivo `.jar` já está incluído na pasta `libs`).
+
+Certifique-se de ter configurado:
+- Driver JDBC do PostgreSQL (adicione-o ao Classpath ou Referenced Libraries da sua IDE).
+- O arquivo `.jar` já está incluído na pasta libs do projeto.
 
 ### 2. Configuração do Banco de Dados
 1. Crie um banco de dados no PostgreSQL chamado `Farmacia`.
 2. Execute o script SQL localizado em `data/FarmaciaScriptBd.sql`.
-3. Verifique o arquivo src/controller/dao/ConnectionFactory.java. As credenciais padrão estão previamente configuradas.
+3. Verifique o arquivo `modelo/dao/ConnectionFactory.java`. As credenciais padrão estão previamente configuradas.
 
 ### 3. Execução
-1. Compile o arquivo Main.java com `javac Main.java`.
-2. Execute-o com `java Main`.
-3. Alternativa: Dê o comando Run em sua IDE de preferência no arquivo Main.java.
+Compile e execute o arquivo `Main.java` com o comando Run em sua IDE de preferência.
