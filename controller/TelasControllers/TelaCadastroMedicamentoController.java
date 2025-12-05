@@ -34,8 +34,8 @@ public class TelaCadastroMedicamentoController{
     private Label labelErroQtd;
 
     //lote enviado da tela cadastro:
-    private Date validade;
-    private int quantidadePorCartela;
+    private Date validadeLotePendente;
+    private int qtdCaixasLotePendente;
 
     private EstoqueController service = new EstoqueController();
 
@@ -65,45 +65,51 @@ public class TelaCadastroMedicamentoController{
 
     @FXML
     void acaoSalvar(ActionEvent event) {
-      String textoQtd = campoQuantidadePorCaixa.getText();
+        String textoQtd = campoQuantidadePorCaixa.getText();
         if (!textoQtd.matches("\\d+")) {
-            
             labelErroQtd.setVisible(true);
             labelErroQtd.setText("A quantidade deve conter apenas números!");
-            
-            return; 
+            return;
         }
-       
+
         String nome = campoNomeMedicamento.getText();
-        int quantidade = Integer.parseInt(textoQtd);
-        String composicao  =  campoComposicao.getText();
+        int qtdPorCaixa = Integer.parseInt(textoQtd); // Ex: 10
+        String composicao = campoComposicao.getText();
         int codigoDeBarras = Integer.parseInt(campoCodigoDeBarras.getText());
-        
-        try{
-          Funcionario funcionario = NotificacoesController.getFuncionarioPadrao();
-          boolean sucesso = service.cadastrarMedicamento(nome, quantidade, composicao, codigoDeBarras, funcionario);
 
-          if(sucesso){
-            System.out.println("Medicamento salvo no Banco de Dados");
+        try {
+            Funcionario funcionario = NotificacoesController.getFuncionarioPadrao();
 
-            if(this.validade != null){
-              boolean sucessoLote = service.cadastrarLote(nome, codigoDeBarras, this.validade, this.quantidadePorCartela, funcionario);
-              if(sucessoLote) System.out.println("Lote salvo no Banco de Dados");
+            // 1. Salva o Medicamento primeiro
+            boolean sucesso = service.cadastrarMedicamento(nome, qtdPorCaixa, composicao, codigoDeBarras, funcionario);
+
+            if (sucesso) {
+                System.out.println("Medicamento salvo no Banco de Dados");
+
+                // 2. Se houver um lote pendente (vindo da tela anterior), salva agora
+                if (this.validadeLotePendente != null) {
+
+                    // Multiplica: 20 caixas * 10 por caixa = 200 comprimidos
+                    int totalComprimidos = this.qtdCaixasLotePendente * qtdPorCaixa; 
+
+                    boolean sucessoLote = service.cadastrarLote(nome, this.validadeLotePendente, totalComprimidos, funcionario);
+
+                    if (sucessoLote) System.out.println("Lote salvo com Total de: " + totalComprimidos + " comprimidos.");
+                }
+
+                acaoCancelar(event);
+            } else {
+                System.out.println("Erro ao salvar medicamento.");
             }
-
-            acaoCancelar(event);
-          } else{
-            System.out.println("Erro ao salvar");
-          }
-        } catch(Exception e){
-          e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public void setDadosLote(String nome, Date validade, int quantidadePorCartela){
       campoNomeMedicamento.setText(nome);
-      this.validade = validade;
-      this.quantidadePorCartela = quantidadePorCartela;
+      this.validadeLotePendente = validade;
+      this.qtdCaixasLotePendente = quantidadePorCartela;
     }
 
 }

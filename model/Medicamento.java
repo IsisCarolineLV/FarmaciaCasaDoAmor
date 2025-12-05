@@ -6,8 +6,8 @@ public class Medicamento {
   private int quantidadePorCartela;
   //private Date validadeRemedio; //nao entendi pq tem validade no medicamento, mas ta ai
   private int codigoDeBarras;
-  
-  
+
+
   public Medicamento() {
   }
 
@@ -49,7 +49,7 @@ public class Medicamento {
   public void setCodigoDeBarras(int codigoDeBarras) {
     this.codigoDeBarras = codigoDeBarras;
   }
-  
+
   private int quantidadeLotes;
 
   public int getQuantidadeLotes() {
@@ -66,5 +66,5 @@ public class Medicamento {
         "\nComposicao:"+composicao+
         "\nComprimidos por cartela:"+quantidadePorCartela;
   }
-  
+
 }

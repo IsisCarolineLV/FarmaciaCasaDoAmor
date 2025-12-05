@@ -28,6 +28,26 @@ public class Acao {
     this.dataDeAcao = LocalDate.now();
     this.horaDeAcao = LocalTime.now();
   }
+
+  public String getTipo() {
+    return tipo;
+  }
+
+  public LocalDate getDataDeAcao() {
+    return dataDeAcao;
+  }
+
+  public LocalTime getHoraDeAcao() {
+    return horaDeAcao;
+  }
+
+  public Funcionario getFuncionario() {
+    return funcionario;
+  }
+
+  public Lote getLote() {
+    return lote;
+  }
 }
 
 

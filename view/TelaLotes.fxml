@@ -44,7 +44,7 @@
                </children>
             </HBox>
 
-            <VBox alignment="TOP_CENTER" maxWidth="700.0" spacing="20.0">
+            <VBox alignment="TOP_CENTER" maxWidth="800.0" spacing="20.0">
                <children>
                   <Label fx:id="lblTitulo" text="Lotes do Medicamento" textFill="#5f8696">
                      <font>
@@ -57,9 +57,15 @@
 
                   <TableView fx:id="tabelaLotes" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white; -fx-background-radius: 10;" VBox.vgrow="ALWAYS">
                     <columns>
-                      <TableColumn fx:id="colId" prefWidth="75.0" style="-fx-alignment: CENTER;" text="ID Lote" />
-                      <TableColumn fx:id="colValidade" prefWidth="200.0" style="-fx-alignment: CENTER;" text="Validade" />
-                      <TableColumn fx:id="colQtd" prefWidth="150.0" style="-fx-alignment: CENTER;" text="Qtd. Itens" />
+                      <TableColumn fx:id="colId" prefWidth="50.0" style="-fx-alignment: CENTER;" text="ID" />
+                      
+                      <TableColumn fx:id="colInfoQtdPorCaixa" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Unid./Caixa" />
+                      
+                      <TableColumn fx:id="colQtdCaixas" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Qtd. Caixas" />
+                      
+                      <TableColumn fx:id="colTotalReal" prefWidth="120.0" style="-fx-alignment: CENTER; -fx-font-weight: bold;" text="Total Compr." />
+                      
+                      <TableColumn fx:id="colValidade" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Validade" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

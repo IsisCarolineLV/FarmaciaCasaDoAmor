@@ -1,8 +1,6 @@
 package controller.TelasControllers;
 
-import controller.EstoqueController;
 import controller.FuncionarioController;
-import controller.NotificacoesController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

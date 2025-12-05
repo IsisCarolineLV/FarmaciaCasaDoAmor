@@ -77,7 +77,11 @@ public class MedicamentoDAOJdbc implements MedicamentoDAO {
 
     @Override
     public List<Medicamento> listarTodos() throws Exception {
-        String sql = "SELECT * FROM Medicamento";
+        String sql = "SELECT m.*, COUNT(l.IDLote) AS TotalLotes " +
+                     "FROM Medicamento m " +
+                     "LEFT JOIN Lote l ON m.IDRemedio = l.IDRemedio " +
+                     "GROUP BY m.IDRemedio, m.Nome, m.QuantidadeRemedio";
+
         List<Medicamento> lista = new ArrayList<>();
 
         try (Connection con = connectionFactory.getConnection();
@@ -85,12 +89,16 @@ public class MedicamentoDAOJdbc implements MedicamentoDAO {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                lista.add(new Medicamento(
+                Medicamento med = new Medicamento(
                     rs.getString("Nome"),
-                    rs.getInt("QuantidadeRemedio"),
+                    rs.getInt("QuantidadeRemedio"), 
                     "", 
                     rs.getInt("IDRemedio")
-                ));
+                );
+
+                med.setQuantidadeLotes(rs.getInt("TotalLotes"));
+
+                lista.add(med);
             }
         }
         return lista;
@@ -129,22 +137,42 @@ public class MedicamentoDAOJdbc implements MedicamentoDAO {
         }
     }
 
-    public void remover(int idRemedio) throws Exception {
-        String sqlLote = "DELETE FROM Lote WHERE IDRemedio = ?";
-        
-        String sqlMedicamento = "DELETE FROM Medicamento WHERE IDRemedio = ?";
+        public void remover(int idRemedio) throws Exception {
+        String sqlDeleteLotes = "DELETE FROM Lote WHERE IDRemedio = ?";
+        String sqlDeleteMedicamento = "DELETE FROM Medicamento WHERE IDRemedio = ?";
 
-        try (Connection con = connectionFactory.getConnection()) {
-            
-            try (PreparedStatement stmtLote = con.prepareStatement(sqlLote)) {
+        Connection con = null;
+
+        try {
+            con = connectionFactory.getConnection();
+
+            con.setAutoCommit(false); 
+
+            try (PreparedStatement stmtLote = con.prepareStatement(sqlDeleteLotes)) {
                 stmtLote.setInt(1, idRemedio);
-                stmtLote.execute();
-            } 
+                stmtLote.executeUpdate();
+            }
 
-            try (PreparedStatement stmtMed = con.prepareStatement(sqlMedicamento)) {
+            try (PreparedStatement stmtMed = con.prepareStatement(sqlDeleteMedicamento)) {
                 stmtMed.setInt(1, idRemedio);
-                stmtMed.execute();
-            } 
+                stmtMed.executeUpdate();
+            }
+
+            con.commit(); 
+
+        } catch (Exception e) {
+            if (con != null) {
+                try {
+                    con.rollback();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            throw e; 
+        } finally {
+            if (con != null) {
+                con.close();
+            }
         }
     }
 

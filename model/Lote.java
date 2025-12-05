@@ -9,7 +9,7 @@ public class Lote {
   private Medicamento medicamento;
 
   public Lote() {}
-  
+
   public Lote(int quantidadeComprimidos, Date validade, Medicamento medicamento){
     this.quantidadeComprimidos=quantidadeComprimidos;
     this.validade= validade;
@@ -63,7 +63,7 @@ public class Lote {
   }
 
   public String toString(){
-    return "Lote nº"+idLote+
+    return "Lote nÂº"+idLote+
           "\n"+medicamento.toString()+
           "\nEstoque:"+quantidadeComprimidos+
           "\nValidade do lote:"+validade.toString();

@@ -54,32 +54,59 @@ public class TelaInicialController {
     private void configurarTabela() {
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("codigoDeBarras"));
-        colQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidadePorCartela"));
+        colQuantidade.setText("Qtd. Lotes"); 
+        colQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidadeLotes"));
 
         tabelaMedicamentos.setRowFactory(tableView -> {
             final TableRow<Medicamento> row = new TableRow<>();
             final ContextMenu contextMenu = new ContextMenu();
-            
+
             MenuItem itemVerLotes = new MenuItem("Ver Lotes");
             itemVerLotes.setOnAction(event -> {
                 if (row.getItem() != null) abrirTelaLotes(row.getItem());
             });
-            MenuItem itemRemover = new MenuItem("Remover Estoque");
-            itemRemover.setOnAction(event -> {
-                if (row.getItem() != null) acaoRetirarEstoque(row.getItem());
-            });
-            
-            contextMenu.getItems().addAll(itemVerLotes, itemRemover);
 
-            // Exibir apenas se a linha não estiver vazia
+            MenuItem itemExcluir = new MenuItem("Excluir Cadastro");
+            itemExcluir.setStyle("-fx-text-fill: red;"); // Opcional: deixa o texto vermelho
+            itemExcluir.setOnAction(event -> {
+                if (row.getItem() != null) acaoExcluirCompleto(row.getItem());
+            });
+
+            contextMenu.getItems().addAll(itemVerLotes, itemExcluir);
+
             row.contextMenuProperty().bind(
                 Bindings.when(row.emptyProperty())
                 .then((ContextMenu)null)
                 .otherwise(contextMenu)
             );
-            
+
             return row;
         });
+    }
+
+    private void acaoExcluirCompleto(Medicamento med) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Excluir Medicamento");
+        alert.setHeaderText("Você está prestes a excluir: " + med.getNome());
+        alert.setContentText("Isso apagará o medicamento e TODOS os lotes associados a ele.\nEssa ação não pode ser desfeita. Tem certeza?");
+
+        Optional<javafx.scene.control.ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == javafx.scene.control.ButtonType.OK) {
+            try {
+                MedicamentoDAOJdbc dao = new MedicamentoDAOJdbc();
+
+                dao.remover(med.getCodigoDeBarras());
+
+                mostrarAlerta("Sucesso", "Medicamento e lotes excluídos com sucesso.");
+
+                carregarDadosDoBanco();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                mostrarAlerta("Erro", "Erro ao excluir: " + e.getMessage());
+            }
+        }
     }
 
     // Abre a tela de visualização de lotes
@@ -92,10 +119,24 @@ public class TelaInicialController {
             TelaLotesController controller = loader.getController();
             controller.setMedicamento(med);
             
-            Stage stage = new Stage();
+            Stage stage = (Stage) tabelaMedicamentos.getScene().getWindow();
             stage.setTitle("Gerenciamento de Lotes - " + med.getNome());
+            boolean fullscreen = stage.isFullScreen();
+            boolean maximizado = stage.isMaximized();
+            double largura = stage.getWidth();
+            double altura = stage.getHeight();
+
             stage.setScene(new Scene(root));
-            stage.show();
+
+            if (maximizado || fullscreen){
+                stage.setFullScreen(fullscreen);
+                stage.setMaximized(maximizado);
+            }else{
+              stage.setWidth(largura);
+              stage.setHeight(altura);
+            }
+
+            //stage.show();
         } catch (Exception e) {
             e.printStackTrace();
             mostrarAlerta("Erro", "Não foi possível abrir a tela de lotes.");
@@ -198,8 +239,22 @@ public class TelaInicialController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root, 900, 600));
-            stage.show();
+            boolean fullscreen = stage.isFullScreen();
+            boolean maximizado = stage.isMaximized();
+            double largura = stage.getWidth();
+            double altura = stage.getHeight();
+
+            stage.setScene(new Scene(root));
+
+            if (maximizado || fullscreen){
+                stage.setFullScreen(fullscreen);
+                stage.setMaximized(maximizado);
+            }else{
+              stage.setWidth(largura);
+              stage.setHeight(altura);
+            }
+
+            //stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
