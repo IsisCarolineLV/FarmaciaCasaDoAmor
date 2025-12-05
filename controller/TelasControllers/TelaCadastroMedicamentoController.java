@@ -65,6 +65,7 @@ public class TelaCadastroMedicamentoController{
 
     @FXML
     void acaoSalvar(ActionEvent event) {
+        labelErroQtd.setVisible(false);
         String textoQtd = campoQuantidadePorCaixa.getText();
         if (!textoQtd.matches("\\d+")) {
             labelErroQtd.setVisible(true);
@@ -99,6 +100,8 @@ public class TelaCadastroMedicamentoController{
 
                 acaoCancelar(event);
             } else {
+                labelErroQtd.setVisible(true);
+                labelErroQtd.setText("Já existe um medicamento com esse código de barras!");
                 System.out.println("Erro ao salvar medicamento.");
             }
         } catch (Exception e) {

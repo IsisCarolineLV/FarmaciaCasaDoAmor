@@ -31,6 +31,10 @@ public class EstoqueController {
     public boolean cadastrarMedicamento(String nome, int qtd, String comp, int cod, Funcionario f) {
         try {
             Medicamento m = new Medicamento(nome.toUpperCase(), qtd, comp, cod);
+            if(medicamentoDAO.buscarPorCodigoBarras(cod) != null) {
+                System.out.println("Medicamento com codigo de barras " + cod + " já cadastrado.");
+                return false;
+            }
             medicamentoDAO.salvar(m);
             historicoDAO.registrarAcao(f.getCPF(), "Cadastrou medicamento "+ nome); //registra no historico a acao
             return true;
@@ -49,7 +53,16 @@ public class EstoqueController {
                 return false;
             }
             
+
             Lote lote = new Lote(qtd, validade, med);
+            Lote buscarLote = loteDAO.buscarPorMedicamentoEValidade(med, validade);
+            if(buscarLote != null) {
+                System.out.println("Lote para o medicamento " + nomeMed + " com validade " + validade + " já cadastrado.");
+                buscarLote.setQuantidadeComprimidos(buscarLote.getQuantidadeComprimidos() + qtd);
+                loteDAO.atualizarQuantidade(buscarLote);
+                historicoDAO.registrarAcao(f.getCPF(), "Atualizou lote de "+ nomeMed);
+                return true;
+            }
             loteDAO.salvar(lote);
             historicoDAO.registrarAcao(f.getCPF(), "Cadastrou lote de"+ nomeMed); //registra no historico a acao
             return true;

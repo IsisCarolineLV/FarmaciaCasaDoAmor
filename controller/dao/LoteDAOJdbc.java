@@ -192,4 +192,29 @@ public class LoteDAOJdbc implements LoteDAO {
         return 0;
     }
 
+    @Override
+    public Lote buscarPorMedicamentoEValidade(Medicamento med, java.sql.Date validade) throws Exception {
+        String sql = "SELECT * FROM Lote WHERE IDRemedio = ? AND Validade = ?";
+
+        try (Connection con = connectionFactory.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setInt(1, med.getCodigoDeBarras());
+            stmt.setDate(2, validade);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Lote lote = new Lote(
+                    rs.getInt("QuantidadeComprimidos"),
+                    rs.getDate("Validade"),
+                    med
+                );
+                lote.setIdLote(rs.getInt("IDLote"));
+                return lote;
+            }
+        }
+        return null;
+    }
+
 }
