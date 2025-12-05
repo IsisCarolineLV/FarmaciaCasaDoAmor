@@ -50,13 +50,30 @@ public class TelaCadastroFuncionarioController {
           boolean sucesso = service.cadastrarFuncionario(campoNomeFuncionario.getText(),campoCPF.getText());
           if(sucesso){
             System.out.println("Novo funcionario salvo no Banco de Dados");
-            acaoCancelar(event);
+            novoNome = campoNomeFuncionario.getText();
+            novoCPF = campoCPF.getText();
+            setFuncionarioResponsavel();
+            navegar(event, "/view/TelaFuncionario.fxml");
           } else{
             System.out.println("Erro ao salvar");
           }
         } catch(Exception e){
           e.printStackTrace();
         }
+    }
+
+    public void setFuncionarioResponsavel() {
+       try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/TelaFuncionario.fxml"));
+        Parent root = loader.load(); // <-- IMPORTANTE!
+        TelaFuncionarioController telaFuncionarioController = loader.getController();
+        telaFuncionarioController.setDadosFuncionario(novoNome, novoCPF);
+       } catch (Exception e) {
+            e.printStackTrace();
+        }
+      controller.NotificacoesController.setFuncionarioResponsavel(
+          new Funcionario(novoNome, novoCPF)
+      );
     }
 
     private void navegar(javafx.event.Event event, String fxmlPath) {

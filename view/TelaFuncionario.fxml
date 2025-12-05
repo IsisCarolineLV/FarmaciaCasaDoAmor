@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelasControllers.TelaFuncionarioController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelasControllers.TelaFuncionarioController">
    
    <left>
       <VBox prefWidth="200.0" style="-fx-background-color: #5F8696; -fx-background-radius: 0 30 30 0;" BorderPane.alignment="CENTER" />
@@ -57,11 +57,9 @@
                               <Font name="System Bold" size="20.0" />
                            </font>
                            <VBox.margin>
-                              <Insets bottom="-50.0" top="-15.0" />
+                              <Insets bottom="-10.0" top="-15.0" />
                            </VBox.margin>
                         </Label>
-                        
-                        <Label fx:id="labelErroQtd" text="Permitido apenas números!" textFill="RED" visible="false" />
                         <Label text="CPF:" textFill="#9bb5bfb6">
                            <font>
                               <Font size="11.0" />

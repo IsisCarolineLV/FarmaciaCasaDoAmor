@@ -1,5 +1,6 @@
 package controller.TelasControllers;
 
+import controller.NotificacoesController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,17 +9,26 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import model.Funcionario;
 
 public class TelaFuncionarioController {
 
     @FXML
     private Label labelCPF;
 
-    @FXML
-    private Label labelErroQtd;
 
     @FXML
     private Label labelNome;
+
+    // Adicione este método
+    @FXML
+    public void initialize() {
+        // Busca o funcionário que foi salvo estaticamente
+        Funcionario f = NotificacoesController.getFuncionarioPadrao();
+        if (f != null) {
+            setDadosFuncionario(f.getNome(), f.getCPF());
+        }
+    }
 
     @FXML
     void acaoTrocar(ActionEvent event) {
@@ -53,6 +63,11 @@ public class TelaFuncionarioController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void setDadosFuncionario(String nome, String cpf){
+        labelNome.setText(nome);
+        labelCPF.setText(cpf);
     }
 
 }

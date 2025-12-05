@@ -25,6 +25,10 @@ public class NotificacoesController {
     return funcionarioResponsavel;
   }
 
+  public static void setFuncionarioResponsavel(Funcionario f) {
+    funcionarioResponsavel = f;
+  }
+
   public static boolean temNotificacoes() {
     return temNotificacoes;
   }

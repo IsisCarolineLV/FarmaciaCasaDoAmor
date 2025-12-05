@@ -3,7 +3,6 @@ package controller.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import model.Funcionario;
 
@@ -29,8 +28,6 @@ public class HistoricoDAOjdbc implements HistoricoDAO {
     }
 
 public Funcionario buscarUltimoFuncionario() {
-        // CORREÇÃO: Usar JOIN para buscar o Nome da tabela Funcionario.
-        // Assumindo que a coluna na tabela Funcionario é 'Nome' (com N maiúsculo)
         String sql = "SELECT h.CPF_Funcionario, f.Nome " + 
                      "FROM Historico h " +
                      "JOIN Funcionario f ON h.CPF_Funcionario = f.CPF " +
@@ -42,7 +39,6 @@ public Funcionario buscarUltimoFuncionario() {
              ResultSet rs = stmt.executeQuery()) {
 
             if (rs.next()) {
-                // Aqui usamos f.Nome (ou apenas 'Nome' se o driver não se importar)
                 String cpf = rs.getString("CPF_Funcionario");
                 String nome = rs.getString("Nome"); 
 
@@ -52,7 +48,6 @@ public Funcionario buscarUltimoFuncionario() {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            // opcional: lanÃ§ar runtime exception ou tratar de outra forma
         }
         return null;
     }
