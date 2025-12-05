@@ -11,7 +11,7 @@ import javafx.scene.text.Font;
 public class GeradorDeNotificacoes {
 
     private final double WIDTH = 578;
-    private final double HEIGHT = 120;
+    private final double HEIGHT = 70;
     private final double ARC_WIDTH = 15;
     private final double ARC_HEIGHT = 15;
     private Color[] cores;

@@ -187,6 +187,7 @@ public class TelaInicialController {
     @FXML public void irParaNotificacoes(MouseEvent event) { navegar(event, "/view/TelaNotificacoes.fxml"); }
     @FXML public void irParaCadastroLote(ActionEvent event) { navegar(event, "/view/TelaCadastroLote.fxml"); }
     @FXML public void irParaCadastroMedicamento(ActionEvent event) { navegar(event, "/view/TelaCadastroMedicamento.fxml"); }
+    @FXML void irParaFuncionario(MouseEvent event) {navegar(event, "/view/TelaFuncionario.fxml"); }
 
     @FXML void irParaHistorico(ActionEvent event) {
         //if(ControllerTelas.getAcesso() != null) System.out.println(ControllerTelas.getAcesso().imprimirHistorico());

@@ -6,6 +6,8 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -13,17 +15,18 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelasControllers.TelaInicialController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TelasControllers.TelaInicialController">
    
    <left>
       <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="200.0" spacing="20.0" style="-fx-background-color: #5F8696; -fx-background-radius: 0 30 30 0;" BorderPane.alignment="CENTER">
          <children>
+
             <Label text="Menu" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
                <VBox.margin>
-                  <Insets top="40.0" />
+                  <Insets top="10.0" />
                </VBox.margin>
             </Label>
             
@@ -73,10 +76,22 @@
                   <Insets right="20.0" top="20.0" />
                </padding>
                <children>
-                  <Circle fill="#5f8696" onMouseClicked="#irParaNotificacoes" radius="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-cursor: hand;" />
-                  <Circle fx:id="circleAtencao" fill="#a94c4c" radius="6.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" visible="false">
+                  <ImageView fitHeight="57.0" fitWidth="62.0" onMouseClicked="#irParaFuncionario" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@pessoinhaAzul.png" />
+                     </image>
                      <HBox.margin>
-                        <Insets left="-10.0" />
+                        <Insets right="-10.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <ImageView fitHeight="57.0" fitWidth="62.0" onMouseClicked="#irParaNotificacoes" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@sininhoAzul.png" />
+                     </image>
+                  </ImageView>
+                  <Circle fx:id="circleAtencao" fill="#a94c4c" radius="6.0" scaleX="1.01" scaleY="1.01" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" visible="false">
+                     <HBox.margin>
+                        <Insets left="-20.0" top="10.0" />
                      </HBox.margin>
                   </Circle>
                </children>
