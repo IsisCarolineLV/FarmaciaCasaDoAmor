@@ -49,6 +49,16 @@ public class Medicamento {
   public void setCodigoDeBarras(int codigoDeBarras) {
     this.codigoDeBarras = codigoDeBarras;
   }
+  
+  private int quantidadeLotes;
+
+  public int getQuantidadeLotes() {
+      return quantidadeLotes;
+  }
+
+  public void setQuantidadeLotes(int quantidadeLotes) {
+      this.quantidadeLotes = quantidadeLotes;
+  }
 
   public String toString(){
     return "Codigo de barras:"+codigoDeBarras+
