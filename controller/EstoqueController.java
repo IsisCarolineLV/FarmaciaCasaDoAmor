@@ -10,6 +10,7 @@ import controller.dao.LoteDAOJdbc;
 import controller.dao.MedicamentoDAO;
 import controller.dao.MedicamentoDAOJdbc;
 import model.Funcionario;
+import model.Historico;
 import model.Lote;
 import model.Medicamento;
 import controller.dao.HistoricoDAOjdbc;
@@ -120,6 +121,26 @@ public class EstoqueController {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public Medicamento buscarPorCodigoDeBarras(int codigoBarras) {
+        try {
+            // Repassa a chamada para o DAO
+            return medicamentoDAO.buscarPorCodigoBarras(codigoBarras);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Historico> buscarHistoricoCompleto() {
+        try {
+            // Chama o novo método implementado no DAO
+            return historicoDAO.buscarTodos();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 }

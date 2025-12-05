@@ -67,7 +67,7 @@ public class MedicamentoDAOJdbc implements MedicamentoDAO {
                 return new Medicamento(
                     rs.getString("Nome"),
                     rs.getInt("QuantidadeRemedio"),
-                    "",
+                    rs.getString("Composicao"),
                     rs.getInt("IDRemedio")
                 );
             }
