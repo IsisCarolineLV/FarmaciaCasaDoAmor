@@ -2,9 +2,9 @@ package model;
 //sou a favor da gente tirar esse funcionario e o acesso
 public class Funcionario {
   private String nome;
-  private long CPF;
+  private String CPF;
 
-  public Funcionario(String nome, long cPF) {
+  public Funcionario(String nome, String cPF) {
     this.nome = nome;
     CPF = cPF;
   }
@@ -17,16 +17,16 @@ public class Funcionario {
     this.nome = nome;
   }
 
-  public long getCPF() {
+  public String getCPF() {
     return CPF;
   }
 
-  public void setCPF(long cPF) {
+  public void setCPF(String cPF) {
     CPF = cPF;
   }
 
   public boolean equals(Funcionario f){
-    if(f.getCPF()==CPF)
+    if(f.getCPF().equals(CPF))
       return true;
     return false;
   }
