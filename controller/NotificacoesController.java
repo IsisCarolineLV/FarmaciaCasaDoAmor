@@ -19,6 +19,9 @@ public class NotificacoesController {
     HistoricoDAOjdbc historicoDAOjdbc = new HistoricoDAOjdbc();
     gerarNotificacoes();
     funcionarioResponsavel = historicoDAOjdbc.buscarUltimoFuncionario();
+    if(funcionarioResponsavel == null) {
+        funcionarioResponsavel = new Funcionario("admin", "123456789");
+    }
   }
 
   public static Funcionario getFuncionarioResponsavel() {

@@ -30,7 +30,7 @@ public class EstoqueController {
 
     public boolean cadastrarMedicamento(String nome, int qtd, String comp, int cod, Funcionario f) {
         try {
-            Medicamento m = new Medicamento(nome, qtd, comp, cod);
+            Medicamento m = new Medicamento(nome.toUpperCase(), qtd, comp, cod);
             medicamentoDAO.salvar(m);
             historicoDAO.registrarAcao(f.getCPF(), "Cadastrou medicamento "+ nome); //registra no historico a acao
             return true;
@@ -42,7 +42,7 @@ public class EstoqueController {
 
     public boolean cadastrarLote(String nomeMed, Date validade, int qtd, Funcionario f) {
         try {
-            Medicamento med = medicamentoDAO.buscarPorNome(nomeMed);
+            Medicamento med = medicamentoDAO.buscarPorNome(nomeMed.toUpperCase());
 
             if (med == null) {
                 System.out.println("Medicamento" + nomeMed + "não encontrado.");
@@ -61,7 +61,7 @@ public class EstoqueController {
 
     public boolean cadastrarFuncionario(String nomeMed, Date validade, int qtd, Funcionario f){
         try {
-            Medicamento med = medicamentoDAO.buscarPorNome(nomeMed);
+            Medicamento med = medicamentoDAO.buscarPorNome(nomeMed.toUpperCase());
 
             if (med == null) {
                 System.out.println("Medicamento" + nomeMed + "não encontrado.");
@@ -80,7 +80,7 @@ public class EstoqueController {
 
     public List<Medicamento> buscarMedicamentos(String termo) {
         try {
-            return medicamentoDAO.buscarPorNomeSemelhante(termo);
+            return medicamentoDAO.buscarPorNomeSemelhante(termo.toUpperCase());
         } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
@@ -117,7 +117,7 @@ public class EstoqueController {
     public Medicamento buscarPorNome(String nome) {
         try {
             // Repassa a chamada para o DAO
-            return medicamentoDAO.buscarPorNome(nome);
+            return medicamentoDAO.buscarPorNome(nome.toUpperCase());
         } catch (Exception e) {
             e.printStackTrace();
             return null;

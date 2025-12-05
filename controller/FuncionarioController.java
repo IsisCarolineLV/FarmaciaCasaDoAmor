@@ -14,7 +14,7 @@ public class FuncionarioController {
 
 
     public boolean cadastrarFuncionario(String nome, String cpf) throws Exception {
-        Funcionario novoFuncionario = new Funcionario(nome, cpf); 
+        Funcionario novoFuncionario = new Funcionario(nome.toUpperCase(), cpf); 
 
         if (funcionarioJaCadastrado(cpf)) {
             return false;
