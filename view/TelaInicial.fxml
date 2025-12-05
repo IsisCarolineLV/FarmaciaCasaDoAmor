@@ -38,20 +38,6 @@
       <StackPane style="-fx-background-color: #E0E7EB;" BorderPane.alignment="CENTER">
          <children>
             
-            <HBox alignment="TOP_RIGHT" pickOnBounds="false">
-               <padding>
-                  <Insets right="20.0" top="20.0" />
-               </padding>
-               <children>
-                  <Circle fill="#5f8696" onMouseClicked="#irParaNotificacoes" radius="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-cursor: hand;" />
-                  <Circle fx:id="circleAtencao" fill="#a94c4c" radius="6.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" visible="false">
-                     <HBox.margin>
-                        <Insets left="-10.0" />
-                     </HBox.margin>
-                  </Circle>
-               </children>
-            </HBox>
-
             <VBox alignment="TOP_CENTER" maxWidth="700.0" spacing="20.0">
                <children>
                   <Label text="Estoque Atual" textFill="#5f8696">
@@ -81,6 +67,21 @@
                   <Insets bottom="20.0" left="20.0" right="20.0" top="60.0" />
                </padding>
             </VBox>
+
+            <HBox alignment="TOP_RIGHT" pickOnBounds="false">
+               <padding>
+                  <Insets right="20.0" top="20.0" />
+               </padding>
+               <children>
+                  <Circle fill="#5f8696" onMouseClicked="#irParaNotificacoes" radius="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-cursor: hand;" />
+                  <Circle fx:id="circleAtencao" fill="#a94c4c" radius="6.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" visible="false">
+                     <HBox.margin>
+                        <Insets left="-10.0" />
+                     </HBox.margin>
+                  </Circle>
+               </children>
+            </HBox>
+
          </children>
       </StackPane>
    </center>

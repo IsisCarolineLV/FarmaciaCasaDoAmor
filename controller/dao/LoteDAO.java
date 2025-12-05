@@ -1,10 +1,13 @@
 package controller.dao;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import model.Lote;
 
 public interface LoteDAO {
     void salvar(Lote lote) throws Exception;
-    List<Lote> listarPorMedicamento(int codigoBarrasMedicamento) throws Exception;
+
+    ArrayList<Lote> listarPorMedicamento(int codigoBarrasMedicamento) throws Exception;
+    ArrayList<Lote> listarQuaseVencidos() throws Exception;
+    ArrayList<Lote> listarVencidos() throws Exception;
 }
