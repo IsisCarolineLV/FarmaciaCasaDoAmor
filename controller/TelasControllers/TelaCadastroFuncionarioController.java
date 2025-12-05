@@ -61,13 +61,13 @@ public class TelaCadastroFuncionarioController {
           e.printStackTrace();
         }
     }
-
+    
     public void setFuncionarioResponsavel() {
        try {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/TelaFuncionario.fxml"));
         Parent root = loader.load(); // <-- IMPORTANTE!
         TelaFuncionarioController telaFuncionarioController = loader.getController();
-        telaFuncionarioController.setDadosFuncionario(novoNome, novoCPF);
+        telaFuncionarioController.setDadosFuncionario(new Funcionario(novoNome, novoCPF));
        } catch (Exception e) {
             e.printStackTrace();
         }

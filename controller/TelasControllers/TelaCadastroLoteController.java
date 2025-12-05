@@ -43,7 +43,7 @@ public class TelaCadastroLoteController{
             int qtdCaixas = Integer.parseInt(textoQtd); 
             Date dataValidade = Date.valueOf(campoValidade.getValue());
 
-            Funcionario funcionario = NotificacoesController.getFuncionarioPadrao();
+            Funcionario funcionario = NotificacoesController.getFuncionarioResponsavel();
 
             Medicamento medExistente = service.buscarPorNome(nomeMedicamento); 
 

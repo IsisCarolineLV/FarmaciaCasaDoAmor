@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane prefHeight="300.0" prefWidth="400.0" 
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.TelasControllers.TelaLoginController">
+   <children>
+      <VBox alignment="CENTER" spacing="15.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0" AnchorPane.bottomAnchor="30.0">
+         <children>
+            <Label text="Acesso de Funcionário" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+            
+            <TextField fx:id="nomeField" promptText="Nome do Funcionário" />
+            
+            <PasswordField fx:id="cpfField" promptText="CPF" />
+            
+            <Label fx:id="labelErro" text="Credenciais inválidas." textFill="red" visible="false" />
+            
+            <Button text="Entrar" onAction="#acaoLogin" prefWidth="200.0" />
+            
+            <Button text="Cancelar" onAction="#acaoCancelar" style="-fx-background-color: #ccc;" prefWidth="200.0" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

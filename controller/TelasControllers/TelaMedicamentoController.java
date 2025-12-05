@@ -60,12 +60,27 @@ public class TelaMedicamentoController {
       e.printStackTrace();
       return;
     }
+    
+    // Define os textos básicos
     labelNome.setText(medReal.getNome());
     labelCodigoBarras.setText(Integer.toString(medReal.getCodigoDeBarras()));
     labelComposicao.setText(medReal.getComposicao());
-    labelEstoqueCaixas.setText(Integer.toString(medReal.getQuantidadePorCartela()));
-    labelEstoqueComprimidos.setText(Integer.toString(medReal.getQuantidadeLotes()*m.getQuantidadePorCartela()));
-  }
+    
+    // --- CÁLCULO DE ESTOQUE CORRIGIDO ---
+    
+    // 1. Busca o total real de comprimidos somando todos os lotes (agora funciona!)
+    int totalComprimidos = service.buscarEstoqueTotal(medReal.getCodigoDeBarras());
+    
+    // 2. Recupera quantos comprimidos vêm em 1 caixa (vindo da tabela Medicamento)
+    int qtdPorCaixa = medReal.getQuantidadePorCartela();
+    
+    // 3. Calcula quantas caixas completas nós temos
+    int totalCaixas = (qtdPorCaixa > 0) ? totalComprimidos / qtdPorCaixa : 0;
+    
+    // 4. Exibe na tela
+    labelEstoqueComprimidos.setText(totalComprimidos + " comprimidos");
+    labelEstoqueCaixas.setText(totalCaixas + (totalCaixas == 1 ? " caixa" : " caixas"));
+}
 
   private void navegar(javafx.event.Event event, String fxmlPath) {
         try {

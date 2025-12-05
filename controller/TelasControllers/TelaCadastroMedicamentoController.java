@@ -78,7 +78,7 @@ public class TelaCadastroMedicamentoController{
         int codigoDeBarras = Integer.parseInt(campoCodigoDeBarras.getText());
 
         try {
-            Funcionario funcionario = NotificacoesController.getFuncionarioPadrao();
+            Funcionario funcionario = NotificacoesController.getFuncionarioResponsavel();
 
             // 1. Salva o Medicamento primeiro
             boolean sucesso = service.cadastrarMedicamento(nome, qtdPorCaixa, composicao, codigoDeBarras, funcionario);

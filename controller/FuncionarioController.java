@@ -1,46 +1,39 @@
 package controller;
 
 import controller.dao.FuncionarioDAO;
-import controller.dao.FuncionarioDAOJdbc;
-import model.Funcionario;
+import controller.dao.FuncionarioDAOJdbc; 
+import model.Funcionario; 
 
 public class FuncionarioController {
-  private FuncionarioDAO funcionarioDAO;
 
-  public FuncionarioController() {
-    this.funcionarioDAO = new FuncionarioDAOJdbc();
-  }
+    private FuncionarioDAO funcionarioDAO;
 
-  public boolean cadastrarFuncionario(String nome, String cpf) {
-    try {
-      Funcionario f = new Funcionario(nome, cpf);
-      funcionarioDAO.salvar(f);
-      return true;
-    } catch (Exception e) {
-      e.printStackTrace(); // Mostra erro no console se houver
-      return false;
+    public FuncionarioController() {
+        this.funcionarioDAO = new FuncionarioDAOJdbc();
     }
-  }
 
-  public Funcionario buscarFuncionarioPorCPF(String cpf) {
-    try {
-      return funcionarioDAO.getFuncionarioResponsavel(cpf);
-    } catch (Exception e) {
-      e.printStackTrace(); // Mostra erro no console se houver
-      return null;
-    }
-  }
 
-  public boolean funcionarioJaCadastrado(String cpf) {
-    try {
-      Funcionario f = funcionarioDAO.getFuncionarioResponsavel(cpf);
-      if (f != null) {
-        return true; // Funcionário já cadastrado
-      }
-      return false; // Funcionário não cadastrado
-    } catch (Exception e) {
-      e.printStackTrace(); // Mostra erro no console se houver
-      return false;
+    public boolean cadastrarFuncionario(String nome, String cpf) throws Exception {
+        Funcionario novoFuncionario = new Funcionario(nome, cpf); 
+
+        if (funcionarioJaCadastrado(cpf)) {
+            return false;
+        }
+
+        funcionarioDAO.salvar(novoFuncionario);
+        return true;
     }
-  }
+
+    public boolean funcionarioJaCadastrado(String cpf) throws Exception {
+        return funcionarioDAO.getFuncionarioResponsavel(cpf) != null;
+    }
+
+    public Funcionario validarLoginEBuscar(String nome, String cpf) throws Exception {
+        Funcionario funcionario = funcionarioDAO.getFuncionarioResponsavel(cpf); 
+
+        if (funcionario != null && funcionario.getNome().equalsIgnoreCase(nome.trim())) {
+            return funcionario; // Retorna o objeto completo se a validação passar
+        }
+        return null; // Login falhou
+    }
 }

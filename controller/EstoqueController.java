@@ -143,4 +143,13 @@ public class EstoqueController {
             return new ArrayList<>();
         }
     }
+
+    public int buscarEstoqueTotal(int codigoBarras) {
+    try {
+        return loteDAO.buscarQuantidadeTotalPorMedicamento(codigoBarras);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return 0;
+    }
+}
 }

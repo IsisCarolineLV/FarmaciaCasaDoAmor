@@ -174,4 +174,22 @@ public class LoteDAOJdbc implements LoteDAO {
         }
     }
 
+    @Override
+    public int buscarQuantidadeTotalPorMedicamento(int idMedicamento) throws Exception {
+        // CORREÇÃO AQUI: Mudamos de "Quantidade" para "QuantidadeComprimidos"
+        String sql = "SELECT SUM(QuantidadeComprimidos) as Total FROM Lote WHERE IDRemedio = ?";
+        
+        try (Connection con = connectionFactory.getConnection();
+            PreparedStatement stmt = con.prepareStatement(sql)) {
+            
+            stmt.setInt(1, idMedicamento);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("Total");
+            }
+        }
+        return 0;
+    }
+
 }

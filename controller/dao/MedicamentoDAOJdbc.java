@@ -18,7 +18,7 @@ public class MedicamentoDAOJdbc implements MedicamentoDAO {
 
     @Override
     public void salvar(Medicamento m) throws Exception {
-        String sql = "INSERT INTO Medicamento (IDRemedio, Nome, QuantidadeRemedio) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Medicamento (IDRemedio, Nome, QuantidadeRemedio, Composicao) VALUES (?, ?, ?, ?)";
         
         try (Connection con = connectionFactory.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -26,6 +26,7 @@ public class MedicamentoDAOJdbc implements MedicamentoDAO {
             stmt.setInt(1, m.getCodigoDeBarras()); 
             stmt.setString(2, m.getNome());
             stmt.setInt(3, m.getQuantidadePorCartela());
+            stmt.setString(4, m.getComposicao());
             
             stmt.execute();
         }
@@ -45,7 +46,7 @@ public class MedicamentoDAOJdbc implements MedicamentoDAO {
                 return new Medicamento(
                     rs.getString("Nome"),
                     rs.getInt("QuantidadeRemedio"),
-                    "", 
+                    rs.getString("Composicao"), // <--- MUDAR DE "" PARA rs.getString("Composicao")
                     rs.getInt("IDRemedio")
                 );
             }
