@@ -35,8 +35,21 @@ public class TelaFuncionarioController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root, 900, 600));
-            stage.show();
+            boolean fullscreen = stage.isFullScreen();
+            boolean maximizado = stage.isMaximized();
+            double largura = stage.getWidth();
+            double altura = stage.getHeight();
+
+            stage.setScene(new Scene(root));
+
+            if (maximizado || fullscreen){
+                stage.setFullScreen(fullscreen);
+                stage.setMaximized(maximizado);
+            }else{
+              stage.setWidth(largura);
+              stage.setHeight(altura);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

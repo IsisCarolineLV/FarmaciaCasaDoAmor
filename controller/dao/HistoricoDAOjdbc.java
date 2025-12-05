@@ -3,6 +3,7 @@ package controller.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import model.Funcionario;
 
@@ -27,26 +28,32 @@ public class HistoricoDAOjdbc implements HistoricoDAO {
         }
     }
 
-    public Funcionario buscarUltimoFuncionario() {
-    String sql = "SELECT CPF_Funcionario, Nome FROM Historico ORDER BY IDHistorico DESC LIMIT 1";
+public Funcionario buscarUltimoFuncionario() {
+        // CORREÇÃO: Usar JOIN para buscar o Nome da tabela Funcionario.
+        // Assumindo que a coluna na tabela Funcionario é 'Nome' (com N maiúsculo)
+        String sql = "SELECT h.CPF_Funcionario, f.Nome " + 
+                     "FROM Historico h " +
+                     "JOIN Funcionario f ON h.CPF_Funcionario = f.CPF " +
+                     "ORDER BY h.IDHistorico DESC " + 
+                     "LIMIT 1";
 
-    try (Connection con = connectionFactory.getConnection();
-         PreparedStatement stmt = con.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery()) {
+        try (Connection con = connectionFactory.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
-        if (rs.next()) {
-            String cpf = rs.getString("CPF_Funcionario");
-            String nome = rs.getString("Nome");
+            if (rs.next()) {
+                // Aqui usamos f.Nome (ou apenas 'Nome' se o driver não se importar)
+                String cpf = rs.getString("CPF_Funcionario");
+                String nome = rs.getString("Nome"); 
 
-            // Cria o objeto e seta os campos explicitamente (seguro independentemente do construtor)
-            Funcionario f = new Funcionario(nome, cpf);
+                Funcionario f = new Funcionario(nome, cpf);
 
-            return f;
+                return f;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // opcional: lanÃ§ar runtime exception ou tratar de outra forma
         }
-    } catch (Exception e) {
-        e.printStackTrace();
-        // opcional: lançar runtime exception ou tratar de outra forma
+        return null;
     }
-    return null;
-}
 }
